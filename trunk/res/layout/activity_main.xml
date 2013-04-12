@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/leftBar"
+      	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"   
+    	android:orientation="horizontal"
+    	android:visibility="gone" >
+    	   
+    	<Button 
+    	    android:id="@+id/btn_new"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"      
+       		android:background="@drawable/btn_bg"
+       		android:layout_margin="10dp"
+       		android:gravity="center"
+        	android:text="新建"
+        	android:textColor="@drawable/btn_color"
+        	android:textSize="15dp" />
+    	
+    	<Button 
+    	    android:id="@+id/btn_view"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"      
+       		android:background="@drawable/btn_bg"
+       		android:layout_margin="10dp"
+       		android:gravity="center"
+        	android:text="视图"
+        	android:textColor="@drawable/btn_color"
+        	android:textSize="15dp" />
+    </LinearLayout>
+    
+    <ListView 
+    android:id="@+id/lvMain"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    >
+	</ListView>
+</LinearLayout>
