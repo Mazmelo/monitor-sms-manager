@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMSRead</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_sms_detail">SmsDetailActivity</string>
+    <string name="title_activity_sms_new">SmsNewActivity</string>
+    <string name="title_activity_sms_view">SmsViewActivity</string>
+    <string name="sms_contact">sms_contact</string>
+    <string name="sms_content">sms_content</string>
+    <string name="sms_address">sms_address</string>
+    <string name="title_activity_main_tab">MainTabActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>
