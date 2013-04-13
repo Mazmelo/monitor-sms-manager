@@ -33,7 +33,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+//测试提交功能
 public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String TAG = "MainActivity";
 	final String SMS_URI_INBOX = "content://sms/";
