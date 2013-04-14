@@ -12,8 +12,9 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:background="@drawable/btn_bg"
-        android:gravity="center"
+        android:background="@drawable/btn_back_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
         android:text="返回"
         android:textColor="@drawable/btn_color"
         android:textSize="15dp" />
@@ -25,9 +26,8 @@
         android:layout_centerInParent="true"
         android:textSize="20dp"
         android:textColor="#FFFFFF"
-        android:text="SMS View"
+        android:text="敬请期待"
         />
-        <!--android:src="@drawable/blank_img" /-->
 
     <Button
         android:id="@+id/bt_new"

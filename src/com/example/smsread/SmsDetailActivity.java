@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -49,7 +48,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	private int lastVisibleIndex;
 	private String strAddress;
 	SmsDetail smsDetail;
-	Button btn;
+	Button btnSend;
 	EditText et;
 	SmsManager sms;
 	private boolean sendAble;//当前按键处于发送状态还是回复状态
@@ -68,6 +67,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 		Log.d(TAG, "onCreate Title OK");
 		sendAble = false;//默认是回复状态
 		et = (EditText)findViewById(R.id.et_msg);
+		btnSend = (Button)findViewById(R.id.bt_reply);
 		//btn = (Button)findViewById(R.id.bt_send);
 		//btn.setOnClickListener(this);
 		Bundle bundle = getIntent().getExtras();
@@ -269,7 +269,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 			et.requestFocus();
 			InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(INPUT_METHOD_SERVICE); 
 	        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-			//btn.setText("发送");
+			btnSend.setText("发送");
 		}
 		else
 		{

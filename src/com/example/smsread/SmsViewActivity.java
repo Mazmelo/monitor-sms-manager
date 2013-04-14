@@ -48,16 +48,16 @@ public class SmsViewActivity extends Activity{
 	protected ArrayList<HashMap<String, Object>> getSmsList() {
 		gridViewList=new ArrayList<HashMap<String,Object>>();
 		HashMap<String, Object>  map = new HashMap<String, Object>();
-		map.put("ItemImage", R.drawable.blank_img);
+		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc1");
 		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_img);
+		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc2");
 		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_img);
+		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc3");
 		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_img);
+		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc4");
 		gridViewList.add(map);
 		return gridViewList;

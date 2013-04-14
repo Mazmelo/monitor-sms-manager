@@ -9,14 +9,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dp"
-        android:padding="5dp"
-        android:background="@drawable/titleBar"
-        android:gravity="center"
-        android:text=">>>"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
+        android:text="..."
+        android:background="@drawable/btn_bg"
         android:textColor="@drawable/btn_color"
         android:textStyle="bold"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
     
     <TextView 
         android:id="@+id/sms_address"

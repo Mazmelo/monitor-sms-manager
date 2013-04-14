@@ -155,13 +155,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		{
 			leftBar.setVisibility(View.VISIBLE);
 			leftBarToggle = true;
-			btnBar.setText("<<<");
+			//btnBar.setText("<<<");
 		}
 		else
 		{
 			leftBar.setVisibility(View.GONE);
 			leftBarToggle = false;
-			btnBar.setText(">>>");
+			//btnBar.setText(">>>");
 		}
     }
     public String getAddressCount(String addr)
