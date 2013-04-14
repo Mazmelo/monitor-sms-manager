@@ -16,12 +16,12 @@
         android:background="@drawable/btn_bg"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:text="收件人..."
+        android:text="收件人"
         android:textColor="@drawable/btn_color"
         android:textSize="16dp" />
             
         <EditText
-    	android:id="@+id/new_sms_address"
+    	android:id="@+id/et_recv"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
     	android:layout_marginLeft="5dp"
@@ -35,7 +35,7 @@
     </LinearLayout>
     
     <EditText 
-        android:id="@+id/new_sms_text"
+        android:id="@+id/et_new_text"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:layout_margin="10dp"

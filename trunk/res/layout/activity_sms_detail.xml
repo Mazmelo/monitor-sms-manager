@@ -23,6 +23,15 @@
      	<EditText 
 	    	android:id="@+id/et_msg"
 	    	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	    	android:background="@drawable/round_shape"
+	    	android:layout_marginLeft="10dp"
+	    	android:layout_marginRight="10dp"
+	    	android:layout_marginTop="5dp"
+	    	android:layout_marginBottom="5dp"
+	    	android:textSize="20dp"
+	    	android:minLines="2"
+	    	android:gravity="top"
+	    	android:hint="请输入回复内容"
 	    	android:visibility="gone"
 	    />
 		<ListView 

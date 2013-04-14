@@ -32,7 +32,7 @@ public class SmsDetail {
 		qBody2 = new LinkedList<SmsClass>();
 		qBody3 = new LinkedList<SmsClass>();
 		Log.d(TAG, "Sms Detail Init OK");
-	}
+	} 
 	/*判断当前短信是否为空*/
 	public boolean isEmpty()
 	{
