@@ -48,9 +48,9 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	private int lastVisibleIndex;
 	private String strAddress;
 	SmsDetail smsDetail;
-	Button btnSend;
 	EditText et;
 	SmsManager sms;
+	Button btnReply;
 	private boolean sendAble;//当前按键处于发送状态还是回复状态
 	
 	private static final String WX_APP_ID = "wxac5ff3d0320855de";
@@ -58,20 +58,15 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    //隐藏程序标题栏
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    //自定义程序标题栏
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_sms_detail);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_detail); 
 		
-		Log.d(TAG, "onCreate Title OK");
 		sendAble = false;//默认是回复状态
 		et = (EditText)findViewById(R.id.et_msg);
-		btnSend = (Button)findViewById(R.id.bt_reply);
-		//btn = (Button)findViewById(R.id.bt_send);
-		//btn.setOnClickListener(this);
+		//取得回击Item带来的数据
 		Bundle bundle = getIntent().getExtras();
-		
 		strAddress = bundle.getString(getText(R.string.sms_address).toString());
 		if(strAddress.startsWith("+"))
 			strAddress = strAddress.substring(1);
@@ -80,40 +75,34 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 		if(strAddress.equals(strContact)) strShowAddr = strContact;
 		else strShowAddr = strContact+"(" + strAddress + ")"; 
 		
-		
 		//标题栏的设置
-
 		TextView tv = (TextView)findViewById(R.id.sms_address);
 		tv.setText(strShowAddr);
-		
+		//返回按钮
 		Button btnBack = (Button)findViewById(R.id.bt_back);
 		btnBack.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
         		finish();
         	}
         });
-		Button btnReply = (Button)findViewById(R.id.bt_reply);
+		btnReply = (Button)findViewById(R.id.bt_reply);
 		btnReply.setOnClickListener(this);
-		
 		
 		lastTime = 0;
 		loadComplete = false;
 		setId = new HashSet<String>();
 		setId.clear();
-		smsDetail = new SmsDetail();
+		smsDetail = new SmsDetail(SmsDetailActivity.this);
 		smsDetail.init();
 		list = new ArrayList<HashMap<String,String>>();
 		getMoreData(strAddress, 30);
 		
-		//ScrollView sv = (ScrollView)findViewById(R.id.sms_scrollview);
 		mSimpleAdapter = new SimpleAdapter(this, list, R.layout.sms_item,  
 	                new String[] { "ItemDate", "ItemText" },  
 	                new int[] { R.id.item_date, R.id.item_content }); 
-		//mSimpleAdapter.isEnabled(1);
 		lv = (ListView)findViewById(R.id.lvSmsDetail);
 		lv.setAdapter(mSimpleAdapter);  
 		lv.setOnScrollListener(this); 
-		//lv.setOnTouchListener(this);
 		
 		//注册到微信
 		wxapi = WXAPIFactory.createWXAPI(SmsDetailActivity.this, WX_APP_ID, true);
@@ -164,7 +153,6 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	public void onScroll(AbsListView view, int firstVisibleItem, 
 			 int visibleItemCount, int totalItemCount)
 	{
-		//Log.d(TAG, "firstVisibleItem="+firstVisibleItem+"visibleItemCount="+visibleItemCount);
 		lastVisibleIndex = firstVisibleItem + visibleItemCount;
 	}
 	public void onScrollStateChanged(AbsListView view, int scrollState)
@@ -175,7 +163,6 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 			Log.d(TAG, "lastVisibleIndex="+lastVisibleIndex+" getCount="+mSimpleAdapter.getCount());
 			if(loadComplete)
 			{
-				
 				return ;
 			}
 			getMoreData(strAddress, 30);
@@ -269,7 +256,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 			et.requestFocus();
 			InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(INPUT_METHOD_SERVICE); 
 	        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-			btnSend.setText("发送");
+			btnReply.setText("发送");
 		}
 		else
 		{
