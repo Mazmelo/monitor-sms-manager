@@ -1,4 +1,6 @@
-package com.example.smsread;
+package com.yaoli.smsread;
+
+import com.yaoli.smsread.R;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
