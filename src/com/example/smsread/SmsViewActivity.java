@@ -2,6 +2,9 @@ package com.example.smsread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -20,6 +23,8 @@ public class SmsViewActivity extends Activity{
 	SimpleAdapter   gridViewAdapter;
 	ArrayList<HashMap<String, Object>>  gridViewList;
 	Button btnBack;
+	SmsDetail smsDetail;
+	HashSet<String> setViewName;//用于去重的视图名称
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -37,17 +42,70 @@ public class SmsViewActivity extends Activity{
 			}
 		});
 		gridView = (GridView)findViewById(R.id.grid_view);
-		gridViewList = getSmsList();
+		gridViewList=new ArrayList<HashMap<String,Object>>();
+		setViewName = new HashSet<String>();
+		getSmsList();
 		Log.d(TAG, "getSmsList OK");
 		gridViewAdapter = getSmsView();
 		Log.d(TAG, "getSmsView OK");
 		gridView.setAdapter(gridViewAdapter);
 		gridView.setOnItemClickListener(gridViewClickListener);
+		
 
 	}
-	protected ArrayList<HashMap<String, Object>> getSmsList() {
-		gridViewList=new ArrayList<HashMap<String,Object>>();
-		HashMap<String, Object>  map = new HashMap<String, Object>();
+	public boolean isViewSms(String body)
+	{
+		Pattern pattern = Pattern.compile("\\{*.\\}");
+		Matcher matcher = pattern.matcher(body);
+		if(matcher.find())
+			return true;
+		else return false;
+	}
+	public String getViewName(String body)
+	{
+		if(isViewSms(body))
+		{
+			int start = body.indexOf('{');
+			int end = body.indexOf('}');
+			return body.substring(start, end+1);
+		}
+		return null;
+	}
+	protected void getSmsList() {
+		Log.d(TAG, "getSmsList begin");
+		if(smsDetail==null)
+		{
+			smsDetail = new SmsDetail(SmsViewActivity.this);
+		}
+		smsDetail.setAddr("10698888170002100");
+		Log.d(TAG, "SetAddr OK");
+		SmsClass sms = null;
+		for(int i=0;i<60;i++)
+		{
+			sms = smsDetail.getOneSms();
+			if (sms == null) return ;
+			//成功取得一条完整的短信
+			Log.d(TAG, "i="+i+" "+sms.body);
+			String viewName = getViewName(sms.body);
+			Log.d(TAG, "viewName="+viewName);
+			if(setViewName.contains(viewName)) 
+			{
+				Log.d(TAG, "contains");
+				continue;
+			}
+			setViewName.add(viewName);
+			if(viewName != null)
+			{
+				Log.d(TAG, "ViewName != null");
+				HashMap<String, Object>  map = new HashMap<String, Object>();
+				map.put("ItemImage", R.drawable.blank_cube);
+				map.put("ItemText", viewName);
+				gridViewList.add(map);
+				Log.d(TAG, "gridViewList add ok");
+			}
+		}
+		Log.d(TAG, "getSmsList OK");
+		/*
 		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc1");
 		gridViewList.add(map);
@@ -59,8 +117,7 @@ public class SmsViewActivity extends Activity{
 		gridViewList.add(map);
 		map.put("ItemImage", R.drawable.blank_cube);
 		map.put("ItemText", "abc4");
-		gridViewList.add(map);
-		return gridViewList;
+		gridViewList.add(map);*/
 	}
 	
 	protected SimpleAdapter getSmsView() {
