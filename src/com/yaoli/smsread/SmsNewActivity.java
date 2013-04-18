@@ -1,6 +1,8 @@
-package com.example.smsread;
+package com.yaoli.smsread;
 
 import java.util.List;
+
+import com.yaoli.smsread.R;
 
 import android.app.Activity;
 import android.content.ContentValues;

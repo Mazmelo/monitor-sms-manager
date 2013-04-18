@@ -1,10 +1,12 @@
-package com.example.smsread;
+package com.yaoli.smsread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.yaoli.smsread.R;
 
 import android.app.Activity;
 import android.os.Bundle;

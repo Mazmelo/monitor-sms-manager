@@ -1,7 +1,9 @@
-package com.example.smsread;
+package com.yaoli.smsread;
 
 import java.util.List;
 import java.util.Map;
+
+import com.yaoli.smsread.R;
 
 import android.content.Context;
 import android.util.Log;

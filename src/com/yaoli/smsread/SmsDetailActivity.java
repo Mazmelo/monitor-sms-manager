@@ -1,4 +1,4 @@
-package com.example.smsread;
+package com.yaoli.smsread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yaoli.smsread.R;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;

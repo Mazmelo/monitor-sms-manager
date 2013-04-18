@@ -1,4 +1,4 @@
-package com.example.smsread;
+package com.yaoli.smsread;
 
 import android.content.Context;
 import android.graphics.Canvas;
