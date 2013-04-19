@@ -206,7 +206,7 @@ public class SmsDetail {
 			return null;
 		}
 		Log.d(TAG, "sBody="+sBody);
-		return new SmsClass(sBody.toString(), one.time);
+		return new SmsClass(sBody.toString(), earlyTime);
 	}
 	public void init()
 	{

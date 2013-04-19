@@ -1,14 +1,9 @@
 package com.yaoli.smsread;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import com.yaoli.smsread.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -120,9 +115,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
         btnBar = (Button)findViewById(R.id.btn_bar);
         btnBar.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		/*Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
-    			startActivity(intent);*/
-        		toggleLeftBar();
+        		Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
+    			startActivity(intent);
+        		//toggleLeftBar();
         	}
         });
         
@@ -212,11 +207,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
 						hashSet.add(strAddress);
 					}
 
-					
+					/*
 					SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", Locale.US);
 					Date d = new Date(longDate);
 					
-					String strDate = dateFormat.format(d);
+					String strDate = dateFormat.format(d);*/
+					TimeUtil t = new TimeUtil(longDate);
+					String strDate = t.toLabel();
 					
 					Map<String, Object> appItem = new HashMap<String, Object>();
 					//appItem.put("Image", R.id.Image);

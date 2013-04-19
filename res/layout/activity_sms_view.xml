@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" 
     android:layout_height="match_parent">
-    <GridView
+    <!--GridView
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" 
@@ -13,5 +13,9 @@
         android:stretchMode="columnWidth"
         android:gravity="center"
         >
-    </GridView>
+    </GridView-->
+    <ListView 
+    	android:id="@+id/lvView"
+    	android:layout_width="match_parent" android:layout_height="match_parent">
+	</ListView>
 </LinearLayout>
