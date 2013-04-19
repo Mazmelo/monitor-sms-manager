@@ -6,27 +6,27 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.yaoli.smsread.R;
-
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class SmsViewActivity extends Activity{
 	public static final String TAG = "SmsViewActivity";
-	private GridView gridView;
-	SimpleAdapter   gridViewAdapter;
-	ArrayList<HashMap<String, Object>>  gridViewList;
+	private ListView listView;
+	SimpleAdapter   listViewAdapter;
+	ArrayList<HashMap<String, Object>>  listViewData;
 	Button btnBack;
 	SmsDetail smsDetail;
-	HashSet<String> setViewName;//用于去重的视图名称
+	HashMap<String, Integer> mapViewName;//用于去重的视图名称 Integer为视图在列表中的位置
+	Handler handler;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -43,18 +43,30 @@ public class SmsViewActivity extends Activity{
 				finish();
 			}
 		});
-		gridView = (GridView)findViewById(R.id.grid_view);
-		gridViewList=new ArrayList<HashMap<String,Object>>();
-		setViewName = new HashSet<String>();
-		getSmsList();
-		Log.d(TAG, "getSmsList OK");
-		gridViewAdapter = getSmsView();
-		Log.d(TAG, "getSmsView OK");
-		gridView.setAdapter(gridViewAdapter);
-		gridView.setOnItemClickListener(gridViewClickListener);
+		listView = (ListView)findViewById(R.id.lvView);
+		listViewData =new ArrayList<HashMap<String,Object>>();
+		mapViewName = new HashMap<String, Integer>();
+		smsDetail = new SmsDetail(SmsViewActivity.this);
+		//getSmsList();
+		handler = new Handler();
+		//handler.postDelayed(add,1);//放入队列并延迟执行
+		handler.post(add);//放入队列
 		
-
+		Log.d(TAG, "getSmsList OK");
+		listViewAdapter = getSmsView();
+		Log.d(TAG, "getSmsView OK");
+		listView.setAdapter(listViewAdapter);
+		listView.setOnItemClickListener(gridViewClickListener);
 	}
+    Runnable add=new Runnable(){
+    	public void run() {
+    		if(getSmsList()==0)
+    		{
+    			handler.postDelayed(add, 100);
+    		}
+    		listViewAdapter.notifyDataSetChanged();
+    	}
+    };
 	public boolean isViewSms(String body)
 	{
 		Pattern pattern = Pattern.compile("\\{*.\\}");
@@ -73,59 +85,55 @@ public class SmsViewActivity extends Activity{
 		}
 		return null;
 	}
-	protected void getSmsList() {
+	protected int getSmsList() {
 		Log.d(TAG, "getSmsList begin");
-		if(smsDetail==null)
-		{
-			smsDetail = new SmsDetail(SmsViewActivity.this);
-		}
 		smsDetail.setAddr("10698888170002100");
 		Log.d(TAG, "SetAddr OK");
 		SmsClass sms = null;
-		for(int i=0;i<60;i++)
+		int pos = 0;
+		for(int i=0;i<10;i++)
 		{
 			sms = smsDetail.getOneSms();
-			if (sms == null) return ;
+			if (sms == null) return 1;
 			//成功取得一条完整的短信
 			Log.d(TAG, "i="+i+" "+sms.body);
 			String viewName = getViewName(sms.body);
 			Log.d(TAG, "viewName="+viewName);
-			if(setViewName.contains(viewName)) 
+			if(mapViewName.containsKey(viewName)) 
 			{
 				Log.d(TAG, "contains");
+				//对计数值加1
+				Integer intpos = mapViewName.get(viewName);
+				String s = listViewData.get(intpos.intValue()).get("ItemCount").toString();
+				Integer integer = Integer.parseInt(s.substring(1, s.length()-1));
+				integer = Integer.valueOf(integer.intValue()+1);
+				s = "("+String.valueOf(integer)+")";
+				listViewData.get(intpos.intValue()).put("ItemCount", s);
 				continue;
 			}
-			setViewName.add(viewName);
+			mapViewName.put(viewName, pos);
+			pos++;
 			if(viewName != null)
 			{
 				Log.d(TAG, "ViewName != null");
 				HashMap<String, Object>  map = new HashMap<String, Object>();
-				map.put("ItemImage", R.drawable.blank_cube);
-				map.put("ItemText", viewName);
-				gridViewList.add(map);
+				TimeUtil t = new TimeUtil(sms.time);
+				map.put("ItemView", viewName);
+				map.put("ItemTime", t.toLabel());
+				map.put("ItemText", sms.body);
+				map.put("ItemCount", "(1)");//至少为1
+				listViewData.add(map);
 				Log.d(TAG, "gridViewList add ok");
 			}
 		}
 		Log.d(TAG, "getSmsList OK");
-		/*
-		map.put("ItemImage", R.drawable.blank_cube);
-		map.put("ItemText", "abc1");
-		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_cube);
-		map.put("ItemText", "abc2");
-		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_cube);
-		map.put("ItemText", "abc3");
-		gridViewList.add(map);
-		map.put("ItemImage", R.drawable.blank_cube);
-		map.put("ItemText", "abc4");
-		gridViewList.add(map);*/
+		return 0;
 	}
 	
 	protected SimpleAdapter getSmsView() {
-		return new SimpleAdapter(this, gridViewList, R.layout.grid_view_item,
-				new String[]{"ItemImage", "ItemText"},
-				new int[]{R.id.gridview_image, R.id.gridview_text});
+		return new SimpleAdapter(this, listViewData, R.layout.grid_view_item,
+				new String[]{"ItemView", "ItemCount", "ItemTime", "ItemText"},
+				new int[]{R.id.view_name, R.id.view_count, R.id.view_time, R.id.view_text});
 	}
 	
 	private  OnItemClickListener  gridViewClickListener=new OnItemClickListener() {
