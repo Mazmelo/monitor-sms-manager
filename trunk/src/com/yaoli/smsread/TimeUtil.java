@@ -24,4 +24,9 @@ public class TimeUtil {
 		}
 		return yearMonth; 
 	}
+	public String toDate()
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+		return dateFormat.format(new Date(longTime));
+	}
 }

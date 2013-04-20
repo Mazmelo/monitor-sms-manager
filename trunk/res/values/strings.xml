@@ -11,5 +11,6 @@
     <string name="sms_address">sms_address</string>
     <string name="title_activity_main_tab">MainTabActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_view_detail">ViewDetailActivity</string>
 
 </resources>
