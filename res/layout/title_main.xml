@@ -10,12 +10,11 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:gravity="center_horizontal"
-        android:text="..."
+        android:gravity="center"
+        android:text="视图"
         android:background="@drawable/btn_bg"
         android:textColor="@drawable/btn_color"
-        android:textStyle="bold"
-        android:textSize="20dp" />
+        android:textSize="15dp" />
     
     <TextView 
         android:id="@+id/sms_address"

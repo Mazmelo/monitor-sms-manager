@@ -2,11 +2,11 @@ package com.yaoli.smsread;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,6 +17,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SmsViewActivity extends Activity{
 	public static final String TAG = "SmsViewActivity";
@@ -27,6 +29,7 @@ public class SmsViewActivity extends Activity{
 	SmsDetail smsDetail;
 	HashMap<String, Integer> mapViewName;//用于去重的视图名称 Integer为视图在列表中的位置
 	Handler handler;
+	String addr;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -87,7 +90,8 @@ public class SmsViewActivity extends Activity{
 	}
 	protected int getSmsList() {
 		Log.d(TAG, "getSmsList begin");
-		smsDetail.setAddr("10698888170002100");
+		addr = "10698888170002100";
+		smsDetail.setAddr(addr);
 		Log.d(TAG, "SetAddr OK");
 		SmsClass sms = null;
 		int pos = 0;
@@ -108,7 +112,9 @@ public class SmsViewActivity extends Activity{
 				Integer integer = Integer.parseInt(s.substring(1, s.length()-1));
 				integer = Integer.valueOf(integer.intValue()+1);
 				s = "("+String.valueOf(integer)+")";
+				Log.d(TAG, "viewName="+viewName+" pos="+intpos.intValue()+" num="+s);
 				listViewData.get(intpos.intValue()).put("ItemCount", s);
+				Log.d(TAG, "continue");
 				continue;
 			}
 			mapViewName.put(viewName, pos);
@@ -144,7 +150,12 @@ public class SmsViewActivity extends Activity{
 				                )
 		{
 			HashMap<String, Object>  item=(HashMap<String, Object>)arg0.getItemAtPosition(pos);
-			setTitle((String)item.get("itemtext"));
+			//Toast.makeText(SmsViewActivity.this, item.get("ItemView").toString(), Toast.LENGTH_LONG).show();
+			
+			Intent intent = new Intent(SmsViewActivity.this, ViewDetailActivity.class);
+	    	intent.putExtra("ViewDetailAddr", addr);
+	    	intent.putExtra("ViewName", item.get("ItemView").toString());
+	    	startActivity(intent);
 		}
 	};
 }

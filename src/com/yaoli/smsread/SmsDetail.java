@@ -33,16 +33,17 @@ public class SmsDetail {
 	boolean isLoadCompleted;//全部加载完？
 	int curNum;//当前已取回的短信条数
 	private static final String TAG = "SmsDetailClass";
+	private static final int maxSegNum=5;
 	public SmsDetail(Context con)
 	{
 		curSms = null;
 		lastTime = 0;
 		complete = false;
 		smsList = new ArrayList<Queue<SmsClass>>();
-		smsList.add(new LinkedList<SmsClass>()); 
-		smsList.add(new LinkedList<SmsClass>()); 
-		smsList.add(new LinkedList<SmsClass>()); 
-		smsList.add(new LinkedList<SmsClass>()); 
+		for(int i=0;i<maxSegNum;i++)
+		{
+			smsList.add(new LinkedList<SmsClass>()); 
+		}
 		setSmsId = new HashSet<String>();
 		context  = con;
 		Log.d(TAG, "Sms Detail Class construct Ok");
@@ -131,11 +132,18 @@ public class SmsDetail {
 	{
 		Log.d(TAG, "isLoadCopleted="+isLoadCompleted+" 0="+smsList.get(0).size());
 		Log.d(TAG, "1="+smsList.get(1).size()+" 2="+smsList.get(2).size()+" 3="+smsList.get(3).size());
+		boolean isSegTooLess = false;//表示是否需要加载分段短信
+		for(int i=1;i<maxSegNum;i++)
+		{
+			if(smsList.get(i).size() < 3)
+			{
+				isSegTooLess = true;//分段的短信中，有任何一段小于3即重新加载
+				break;
+			}
+		}
 		return !isLoadCompleted && //如果加载完了 返回false 否则任何一个短信下标的队列为空 返回 true
 				(smsList.get(0).size() < 3) &&
-				((smsList.get(1).size() < 3) || 
-						(smsList.get(2).size() < 3) || 
-						(smsList.get(3).size() < 3));
+				(isSegTooLess);
 	}
 	public long diffTime(long t1, long t2)
 	{
@@ -151,8 +159,35 @@ public class SmsDetail {
 			loadMoreData(30);
 			Log.d(TAG, "loadMoreData OK");
 		}
-		
-		SmsClass full, one, two, three;
+		ArrayList<SmsClass> smsSeg = new ArrayList<SmsClass>();
+		long earlyTime = 0;
+		for(int i=0;i<maxSegNum;i++)
+		{
+			SmsClass seg =smsList.get(i).peek(); 
+			if(seg != null && seg.time > earlyTime)
+			{
+				//优先返回时间值大的
+				earlyTime = seg.time;
+			}
+			smsSeg.add(seg);
+		}
+		//返回一条完整的短信
+		if(smsSeg.get(0) != null && smsSeg.get(0).time == earlyTime)
+		{
+			smsList.get(0).poll();
+			return smsSeg.get(0);
+		}
+		StringBuilder sBody = new StringBuilder();//合并而成的短信
+		//开始拼接
+		for(int i=1;i<maxSegNum;i++)
+		{
+			if(smsSeg.get(i) != null)
+			{
+				sBody.append(smsSeg.get(i).body);
+				smsList.get(i).poll();
+			}
+		}/*
+		SmsClass full, one,  two, three;
 		full = smsList.get(0).peek();
 		one = smsList.get(1).peek();
 		two = smsList.get(2).peek();
@@ -181,7 +216,7 @@ public class SmsDetail {
 		
 		if(full != null && full.time < earlyTime) return full;
 
-		StringBuilder sBody = new StringBuilder();//合并而成的短信
+		
 		long newTime = 0;
 		if(one != null)
 		{
@@ -199,7 +234,7 @@ public class SmsDetail {
 		{
 			sBody.append(three.body);
 			smsList.get(3).poll();
-		}
+		}*/
 		if(sBody.toString().length()==0) 
 		{
 			Log.d(TAG, "sBody equals null");
