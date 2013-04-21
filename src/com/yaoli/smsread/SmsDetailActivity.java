@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yaoli.smsread.R;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -94,7 +92,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 		setId = new HashSet<String>();
 		setId.clear();
 		smsDetail = new SmsDetail(SmsDetailActivity.this);
-		smsDetail.init();
+		//smsDetail.init();
 		list = new ArrayList<HashMap<String,String>>();
 		getMoreData(strAddress, 30);
 		
@@ -172,7 +170,23 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	}
 	public void getMoreData(String telNum, int getNum)
 	{
-		String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
+		smsDetail.setAddr(telNum);
+		SmsClass sms = null;
+		for(int i=0;i<getNum;i++)
+		{
+			sms = smsDetail.getOneSms();
+			if(sms == null) 
+			{
+				loadComplete = true;
+				return ;
+			}
+			TimeUtil t = new TimeUtil(sms.time);
+			HashMap<String, String> map = new HashMap<String, String>();  
+			map.put("ItemDate", t.toDate());
+			map.put("ItemText", sms.body);
+			list.add(map);
+		}
+		/*String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
 		String selection;
 		if(lastTime!=0)
 		{
@@ -236,7 +250,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 			map.put("ItemDate", smsDetail.getDate());
 			map.put("ItemText", smsDetail.toString());
 			list.add(map);
-		}
+		}*/
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
