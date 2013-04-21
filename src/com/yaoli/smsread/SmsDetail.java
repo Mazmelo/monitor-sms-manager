@@ -72,15 +72,16 @@ public class SmsDetail {
 	{
 		Log.d(TAG, "loadMoreData begin getNum:"+getNum+" lastLoadTime:"+lastLoadTime);
 		if(getNum<=0 || isLoadCompleted) return true;
-		String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
-		String selection;
+		String[] projection = new String[] { "_id", /*"address", "person", */"body", "date", /*"type"*/ };
+		String selection="";
 		if(lastLoadTime!=0)
 		{
-			selection = "address='"+addr+"' and date<='"+lastLoadTime+"'";
+			//selection = "address='"+addr+"' and date<='"+lastLoadTime+"'";
+			selection = "date <= '"+lastLoadTime+"'";
 		}
 		else
 		{
-			selection = "address='"+addr+"'";
+			//selection = "address='"+addr+"'";
 		}
 		Log.d(TAG, "selection="+selection);
 		Cursor cur = context.getContentResolver().query(Uri.parse("content://sms/"), 
@@ -132,18 +133,14 @@ public class SmsDetail {
 	{
 		Log.d(TAG, "isLoadCopleted="+isLoadCompleted+" 0="+smsList.get(0).size());
 		Log.d(TAG, "1="+smsList.get(1).size()+" 2="+smsList.get(2).size()+" 3="+smsList.get(3).size());
-		boolean isSegTooLess = false;//表示是否需要加载分段短信
+		int segNum = 0;
 		for(int i=1;i<maxSegNum;i++)
 		{
-			if(smsList.get(i).size() < 3)
-			{
-				isSegTooLess = true;//分段的短信中，有任何一段小于3即重新加载
-				break;
-			}
+			segNum += smsList.get(i).size();
 		}
 		return !isLoadCompleted && //如果加载完了 返回false 否则任何一个短信下标的队列为空 返回 true
 				(smsList.get(0).size() < 3) &&
-				(isSegTooLess);
+				(segNum < 10);
 	}
 	public long diffTime(long t1, long t2)
 	{
@@ -153,7 +150,6 @@ public class SmsDetail {
 	//取得一条完整的短信
 	public SmsClass getOneSms()
 	{
-		Log.d(TAG, "getOneSms begin");
 		if(needLoadData()) 
 		{
 			loadMoreData(30);
@@ -181,66 +177,21 @@ public class SmsDetail {
 		//开始拼接
 		for(int i=1;i<maxSegNum;i++)
 		{
+			SmsClass sms = smsSeg.get(i);
 			if(smsSeg.get(i) != null)
 			{
-				sBody.append(smsSeg.get(i).body);
+				sBody.append(sms.body);
+				Log.d(TAG, "i="+i+" time="+sms.time+" "+sms.cur+"/"+sms.total+" "+sms.body);
 				smsList.get(i).poll();
+				if(i == sms.total) break;//拼接已完成
 			}
-		}/*
-		SmsClass full, one,  two, three;
-		full = smsList.get(0).peek();
-		one = smsList.get(1).peek();
-		two = smsList.get(2).peek();
-		three = smsList.get(3).peek();
-		Log.d(TAG, "full="+full+" one="+one+" two="+two+" three="+three);
-		long oneTime=0, twoTime=0, threeTime=0;
-		long earlyTime = 0;
-		if(one != null) 
-		{
-			Log.d(TAG, "one.time="+one.time);
-			oneTime = one.time;
-			earlyTime = one.time;
 		}
-		if(two != null)
-		{
-			Log.d(TAG,"two.time="+two.time);
-			twoTime = two.time;
-			if(twoTime < earlyTime)	earlyTime = two.time;
-		}
-		if(three != null)
-		{
-			Log.d(TAG, "three.time="+three.time);
-			threeTime = three.time;
-			if(threeTime < earlyTime) earlyTime = three.time;
-		}
-		
-		if(full != null && full.time < earlyTime) return full;
-
-		
-		long newTime = 0;
-		if(one != null)
-		{
-			sBody.append(one.body);
-			newTime = oneTime;
-			smsList.get(1).poll();
-		}
-		if(two != null && (sBody.toString().length() == 0 || diffTime(newTime, twoTime) < 10*1000))
-		{
-			//短信的第二段
-			sBody.append(two.body);
-			smsList.get(2).poll();
-		}
-		if(three != null && (sBody.toString().length() == 0 || diffTime(newTime, threeTime) < 10*1000))
-		{
-			sBody.append(three.body);
-			smsList.get(3).poll();
-		}*/
 		if(sBody.toString().length()==0) 
 		{
 			Log.d(TAG, "sBody equals null");
 			return null;
 		}
-		Log.d(TAG, "sBody="+sBody);
+		//Log.d(TAG, "sBody="+sBody);
 		return new SmsClass(sBody.toString(), earlyTime);
 	}
 	public void init()

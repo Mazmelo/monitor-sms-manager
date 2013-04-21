@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	int CurPos;
 	Button btnBar, btnNew, btnView;
 	boolean leftBarToggle = false;
+	PopMenu popMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,11 @@ public class MainActivity extends Activity implements OnItemClickListener{
 		Handler handler=new Handler();
 		//handler.postDelayed(add,1);//放入队列并延迟3ms执行
 		handler.post(add);//放入队列
+		
+		//弹出式菜单
+		popMenu = new PopMenu(MainActivity.this);
+		popMenu.addItems(new String[]{"全部告警", "视图告警", "告警集合", "其他告警"});
+		//popMenu.setOnItemClickListener(this);
 		
         lv.setOnItemClickListener(this);
         lv.setOnItemLongClickListener(new OnItemLongClickListener(){
@@ -115,9 +121,12 @@ public class MainActivity extends Activity implements OnItemClickListener{
         btnBar = (Button)findViewById(R.id.btn_bar);
         btnBar.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
-    			startActivity(intent);
+        		/*Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
+    			startActivity(intent);*/
         		//toggleLeftBar();
+        		Log.d(TAG, "btn_view clicked");
+        		//弹出窗口
+        		popMenu.showAsDropDown(v);
         	}
         });
         
@@ -138,8 +147,10 @@ public class MainActivity extends Activity implements OnItemClickListener{
         btnView = (Button)findViewById(R.id.btn_view);
         btnView.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
-    			startActivity(intent);
+        		/*跳转到视图的Activity
+        		 * Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
+    			startActivity(intent);*/
+        		//popMenu.setOnItemClickListener(MainActivity.this);
         	}
         });
         
@@ -265,6 +276,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 	@Override
 	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 		// TODO Auto-generated method stub
