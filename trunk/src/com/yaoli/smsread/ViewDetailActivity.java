@@ -41,7 +41,7 @@ public class ViewDetailActivity extends Activity {
 		listView = (ListView)findViewById(R.id.lvView);
 		listViewData =new ArrayList<HashMap<String,Object>>();
 		smsDetail = new SmsDetail(ViewDetailActivity.this);
-		smsDetail.setAddr(addr);
+		//smsDetail.setAddr(addr);
 		//getSmsList();
 		
 		

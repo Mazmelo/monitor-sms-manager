@@ -29,6 +29,7 @@ public class SmsDetail {
 	String sbody;
 	Context context;
 	String addr;//当前联系人的号码
+	boolean hasAddr;
 	HashSet<String> setSmsId;//当前联系人所有短信的id集合
 	boolean isLoadCompleted;//全部加载完？
 	int curNum;//当前已取回的短信条数
@@ -46,6 +47,8 @@ public class SmsDetail {
 		}
 		setSmsId = new HashSet<String>();
 		context  = con;
+		addr = "";
+		hasAddr = false;
 		Log.d(TAG, "Sms Detail Class construct Ok");
 	}
 	//取得一条短信的下标，如果未分段，则返回0，否则返回该短信在合并后完整短信中的下标
@@ -74,15 +77,22 @@ public class SmsDetail {
 		if(getNum<=0 || isLoadCompleted) return true;
 		String[] projection = new String[] { "_id", /*"address", "person", */"body", "date", /*"type"*/ };
 		String selection="";
-		if(lastLoadTime!=0)
+		if(hasAddr)
 		{
-			//selection = "address='"+addr+"' and date<='"+lastLoadTime+"'";
-			selection = "date <= '"+lastLoadTime+"'";
+			selection = "address='" + addr +"' ";
+			if(lastLoadTime != 0)
+			{
+				selection += " and date <='" + lastLoadTime + "'";
+			}
 		}
 		else
 		{
-			//selection = "address='"+addr+"'";
+			if(lastLoadTime!=0)
+			{
+				selection += "date <= '"+lastLoadTime+"'";
+			}
 		}
+
 		Log.d(TAG, "selection="+selection);
 		Cursor cur = context.getContentResolver().query(Uri.parse("content://sms/"), 
 				projection,
@@ -128,6 +138,7 @@ public class SmsDetail {
 	public void setAddr(String address)
 	{
 		addr = address;
+		hasAddr = true;
 	}
 	public boolean needLoadData()
 	{
