@@ -89,7 +89,7 @@ public class ViewDetailActivity extends Activity {
 	    	public void run() {
 	    		if(getViewDetailList()==0)
 	    		{
-	    			handler.postDelayed(add, 100);
+	    			handler.postDelayed(add, 10);
 	    		}
 	    		listViewAdapter.notifyDataSetChanged();
 	    	}

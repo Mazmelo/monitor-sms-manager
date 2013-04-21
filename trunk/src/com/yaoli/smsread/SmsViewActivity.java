@@ -30,6 +30,7 @@ public class SmsViewActivity extends Activity{
 	HashMap<String, Integer> mapViewName;//用于去重的视图名称 Integer为视图在列表中的位置
 	Handler handler;
 	String addr;
+	int pos = 0;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -60,12 +61,13 @@ public class SmsViewActivity extends Activity{
 		Log.d(TAG, "getSmsView OK");
 		listView.setAdapter(listViewAdapter);
 		listView.setOnItemClickListener(gridViewClickListener);
+		pos=0;
 	}
     Runnable add=new Runnable(){
     	public void run() {
     		if(getSmsList()==0)
     		{
-    			handler.postDelayed(add, 100);
+    			handler.postDelayed(add, 10);
     		}
     		listViewAdapter.notifyDataSetChanged();
     	}
@@ -94,7 +96,6 @@ public class SmsViewActivity extends Activity{
 		smsDetail.setAddr(addr);
 		Log.d(TAG, "SetAddr OK");
 		SmsClass sms = null;
-		int pos = 0;
 		for(int i=0;i<10;i++)
 		{
 			sms = smsDetail.getOneSms();
@@ -105,7 +106,6 @@ public class SmsViewActivity extends Activity{
 			Log.d(TAG, "viewName="+viewName);
 			if(mapViewName.containsKey(viewName)) 
 			{
-				Log.d(TAG, "contains");
 				//对计数值加1
 				Integer intpos = mapViewName.get(viewName);
 				String s = listViewData.get(intpos.intValue()).get("ItemCount").toString();
@@ -114,14 +114,12 @@ public class SmsViewActivity extends Activity{
 				s = "("+String.valueOf(integer)+")";
 				Log.d(TAG, "viewName="+viewName+" pos="+intpos.intValue()+" num="+s);
 				listViewData.get(intpos.intValue()).put("ItemCount", s);
-				Log.d(TAG, "continue");
 				continue;
 			}
-			mapViewName.put(viewName, pos);
-			pos++;
 			if(viewName != null)
 			{
-				Log.d(TAG, "ViewName != null");
+				Log.d(TAG, "viewName="+viewName+" pos="+pos);
+				mapViewName.put(viewName, Integer.valueOf(pos++));
 				HashMap<String, Object>  map = new HashMap<String, Object>();
 				TimeUtil t = new TimeUtil(sms.time);
 				map.put("ItemView", viewName);
@@ -129,7 +127,6 @@ public class SmsViewActivity extends Activity{
 				map.put("ItemText", sms.body);
 				map.put("ItemCount", "(1)");//至少为1
 				listViewData.add(map);
-				Log.d(TAG, "gridViewList add ok");
 			}
 		}
 		Log.d(TAG, "getSmsList OK");
