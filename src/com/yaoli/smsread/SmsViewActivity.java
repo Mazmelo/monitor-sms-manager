@@ -92,9 +92,7 @@ public class SmsViewActivity extends Activity{
 	}
 	protected int getSmsList() {
 		Log.d(TAG, "getSmsList begin");
-		addr = "10698888170002100";
-		smsDetail.setAddr(addr);
-		Log.d(TAG, "SetAddr OK");
+		//smsDetail.setAddr(addr);
 		SmsClass sms = null;
 		for(int i=0;i<10;i++)
 		{

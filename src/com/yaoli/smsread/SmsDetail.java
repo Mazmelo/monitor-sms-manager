@@ -34,7 +34,7 @@ public class SmsDetail {
 	boolean isLoadCompleted;//全部加载完？
 	int curNum;//当前已取回的短信条数
 	private static final String TAG = "SmsDetailClass";
-	private static final int maxSegNum=5;
+	private static final int maxSegNum=10;
 	public SmsDetail(Context con)
 	{
 		curSms = null;
@@ -62,7 +62,7 @@ public class SmsDetail {
 			int sep = sms.body.indexOf('/');
 			sms.cur = Integer.valueOf(sms.body.substring(sep-1, sep)).intValue();
 			sms.total = Integer.valueOf(sms.body.substring(sep+1, sep+2)).intValue();
-			Log.d(TAG, "cur="+sms.cur+" total="+sms.total+" time="+sms.time);
+			Log.d(TAG, "cur="+sms.cur+" total="+sms.total+" time="+sms.time+" body="+sms.body);
 			sep += 2;
 			if(sms.body.charAt(sep)==')') sep += 1;//过滤掉）
 			sms.body = sms.body.substring(sep);

@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pop_item_text_view"
-        android:textSize="15dp"
-        android:padding="2dp"
+        android:textSize="20dp"
+        android:padding="10dp"
         />
 
 </LinearLayout>

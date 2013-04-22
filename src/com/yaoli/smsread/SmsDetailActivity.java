@@ -7,11 +7,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,7 +36,8 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.mm.sdk.openapi.WXMediaMessage;
 import com.tencent.mm.sdk.openapi.WXTextObject;
 
-public class SmsDetailActivity extends Activity implements OnScrollListener,OnClickListener,OnTouchListener{
+public class SmsDetailActivity extends Activity 
+implements OnScrollListener, OnClickListener, OnGestureListener{
 	private static final String TAG = "SmsDetailActivity";
 	private SimpleAdapter mSimpleAdapter;
 	private ListView lv;
@@ -106,7 +107,7 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 		//×¢²áµ½Î¢ÐÅ
 		wxapi = WXAPIFactory.createWXAPI(SmsDetailActivity.this, WX_APP_ID, true);
 		wxapi.registerApp(WX_APP_ID);
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		/*lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 			  int position, long id) {
@@ -130,13 +131,13 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 			 wxapi.sendReq(req);
 			 Toast.makeText(SmsDetailActivity.this, date ,Toast.LENGTH_LONG).show();
 			}
-		});
+		});*/
 	
 		
 	}
-	public boolean onTouch(View v, MotionEvent event)
+	/*public boolean onTouch(View v, MotionEvent event)
 	{
-		/*if(sendAble)
+		if(sendAble)
 		{
 			InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(INPUT_METHOD_SERVICE); 
 	        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -146,9 +147,9 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 	    		btn.setText("»Ø¸´");
 	    		sendAble = false;
 	        }
-		}*/
-		return true;
-	}
+		}
+		return false;
+	}*/
 	public void onScroll(AbsListView view, int firstVisibleItem, 
 			 int visibleItemCount, int totalItemCount)
 	{
@@ -297,6 +298,53 @@ public class SmsDetailActivity extends Activity implements OnScrollListener,OnCl
 				this.finish();
 			}
 		}
+	}
+	@Override
+	public boolean onDown(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onDown");
+		return false;
+	}
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float x,
+			float y) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "OnFling");
+        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH){
+            return false;
+        }
+        if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(x) > SWIPE_THRESHOLD_VELOCITY) {
+            Toast.makeText(getApplicationContext(), "Left Swipe", Toast.LENGTH_SHORT).show();
+        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(x) > SWIPE_THRESHOLD_VELOCITY) {
+            Toast.makeText(getApplicationContext(), "Right Swipe", Toast.LENGTH_SHORT).show();
+        }
+		return true;
+	}
+	@Override
+	public void onLongPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onLongPress");
+	}
+	@Override
+	public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+			float arg3) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onScroll");
+		return false;
+	}
+	@Override
+	public void onShowPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onShowPress");
+	}
+	@Override
+	public boolean onSingleTapUp(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "onSingleTapUp");
+		return false;
 	}
 
 }

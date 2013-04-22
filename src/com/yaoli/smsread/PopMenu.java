@@ -45,7 +45,7 @@ public class PopMenu implements OnItemClickListener {
 
         popupWindow = new PopupWindow(view, 
                        // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //这里宽度需要自己指定，使用 WRAP_CONTENT 会很大
-        		100,
+        		150,
         		LayoutParams.WRAP_CONTENT);
         Log.d(TAG, "PopupWindow OK");
         // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景（很神奇的）
@@ -80,10 +80,10 @@ public void addItem(String item) {
 
 // 下拉式 弹出 pop菜单 parent 右下角
 public void showAsDropDown(View parent) {
-        popupWindow.showAsDropDown(parent, 10,
+        popupWindow.showAsDropDown(parent, 50,
         // 保证尺寸是根据屏幕像素密度来的
                         //context.getResources().getDimensionPixelSize(R.dimen.popmenu_yoff),
-        		10);
+        		14);//垂直距离
 
         // 使其聚集
         popupWindow.setFocusable(true);
