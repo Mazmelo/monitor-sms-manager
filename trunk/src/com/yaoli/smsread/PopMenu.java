@@ -24,7 +24,7 @@ public class PopMenu implements OnItemClickListener {
 	/*public interface OnItemClickListener {
         public void onItemClick(int index);
 	}*/
-	
+	//
 	private ArrayList<String> itemList;
 	private Context context;
     private PopupWindow popupWindow;
@@ -45,11 +45,11 @@ public class PopMenu implements OnItemClickListener {
         listView.setOnItemClickListener(this);
 
         popupWindow = new PopupWindow(view, 
-                       // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //ÕâÀï¿í¶ÈÐèÒª×Ô¼ºÖ¸¶¨£¬Ê¹ÓÃ WRAP_CONTENT »áºÜ´ó
+                       // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ô¼ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ WRAP_CONTENT ï¿½ï¿½Ü´ï¿½
         		LayoutParams.WRAP_CONTENT,
         		LayoutParams.WRAP_CONTENT);
         Log.d(TAG, "PopupWindow OK");
-        // Õâ¸öÊÇÎªÁËµã»÷¡°·µ»ØBack¡±Ò²ÄÜÊ¹ÆäÏûÊ§£¬²¢ÇÒ²¢²»»áÓ°ÏìÄãµÄ±³¾°£¨ºÜÉñÆæµÄ£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Backï¿½ï¿½Ò²ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,50 +57,50 @@ public class PopMenu implements OnItemClickListener {
                 listener.onItemClick(position);
         }*/
         dismiss();
-		//Ìø×ªµ½ÊÓÍ¼µÄActivity
+		//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Activity
 	 	Intent intent = new Intent(context, SmsViewActivity.class);
 	 	context.startActivity(intent);
 }
 
-// ÉèÖÃ²Ëµ¥Ïîµã»÷¼àÌýÆ÷
+// ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 public void setOnItemClickListener(OnItemClickListener listener) {
          //this.listener = listener;
 }
 
 
-// ÅúÁ¿Ìí¼Ó²Ëµ¥Ïî
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²Ëµï¿½ï¿½ï¿½
 public void addItems(String[] items) {
         for (String s : items)
                 itemList.add(s);
 }
 
-// µ¥¸öÌí¼Ó²Ëµ¥Ïî
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²Ëµï¿½ï¿½ï¿½
 public void addItem(String item) {
         itemList.add(item);
 }
 
-// ÏÂÀ­Ê½ µ¯³ö pop²Ëµ¥ parent ÓÒÏÂ½Ç
+// ï¿½ï¿½ï¿½ï¿½Ê½ ï¿½ï¿½ï¿½ï¿½ popï¿½Ëµï¿½ parent ï¿½ï¿½ï¿½Â½ï¿½
 public void showAsDropDown(View parent) {
-		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//ÆÁÄ»¿í¶È
+		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//ï¿½ï¿½Ä»ï¿½ï¿½ï¿½
         popupWindow.showAsDropDown(parent,
         		 2*parent.getWidth(),
-        		 20);//´¹Ö±¾àÀë
+        		 20);//ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 
-        // Ê¹Æä¾Û¼¯
+        // Ê¹ï¿½ï¿½Û¼ï¿½
         popupWindow.setFocusable(true);
-        // ÉèÖÃÔÊÐíÔÚÍâµã»÷ÏûÊ§
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         popupWindow.setOutsideTouchable(true);
-        // Ë¢ÐÂ×´Ì¬
+        // Ë¢ï¿½ï¿½×´Ì¬
         popupWindow.update();
 	}
 
-// Òþ²Ø²Ëµ¥
+// ï¿½ï¿½ï¿½Ø²Ëµï¿½
 public void dismiss() {
         popupWindow.dismiss();
 	}
 
 
-//ÊÊÅäÆ÷
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 private final class PopAdapter extends BaseAdapter {
         @Override
         public int getCount() {
