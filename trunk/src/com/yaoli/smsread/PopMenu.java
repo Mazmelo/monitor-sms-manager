@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class PopMenu implements OnItemClickListener {
 
         popupWindow = new PopupWindow(view, 
                        // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //这里宽度需要自己指定，使用 WRAP_CONTENT 会很大
-        		150,
+        		LayoutParams.WRAP_CONTENT,
         		LayoutParams.WRAP_CONTENT);
         Log.d(TAG, "PopupWindow OK");
         // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景（很神奇的）
@@ -80,10 +81,10 @@ public void addItem(String item) {
 
 // 下拉式 弹出 pop菜单 parent 右下角
 public void showAsDropDown(View parent) {
-        popupWindow.showAsDropDown(parent, 50,
-        // 保证尺寸是根据屏幕像素密度来的
-                        //context.getResources().getDimensionPixelSize(R.dimen.popmenu_yoff),
-        		14);//垂直距离
+		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//屏幕宽度
+        popupWindow.showAsDropDown(parent,
+        		 2*parent.getWidth(),
+        		 20);//垂直距离
 
         // 使其聚集
         popupWindow.setFocusable(true);
