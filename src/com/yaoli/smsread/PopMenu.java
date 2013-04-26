@@ -24,9 +24,9 @@ public class PopMenu implements OnItemClickListener {
 	/*public interface OnItemClickListener {
         public void onItemClick(int index);
 	}*/
-	//
-	private ArrayList<String> itemList;
-	private Context context;
+
+    private ArrayList<String> itemList;
+    private Context context;
     private PopupWindow popupWindow;
     private ListView listView;
     //private OnItemClickListener listener;
@@ -44,12 +44,12 @@ public class PopMenu implements OnItemClickListener {
         listView.setAdapter(new PopAdapter());
         listView.setOnItemClickListener(this);
 
-        popupWindow = new PopupWindow(view, 
-                       // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //???????????????????? WRAP_CONTENT ?????
-        		LayoutParams.WRAP_CONTENT,
-        		LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(view,
+                // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //这里宽度需要自己指定，使用 WRAP_CONTENT 会很大
+                context.getResources().getDisplayMetrics().widthPixels/2-50,
+                LayoutParams.WRAP_CONTENT);
         Log.d(TAG, "PopupWindow OK");
-        // ????????????????Back?????????????????????????????????????????
+        // 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景（很神奇的）
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,85 +57,85 @@ public class PopMenu implements OnItemClickListener {
                 listener.onItemClick(position);
         }*/
         dismiss();
-		//??????????Activity
-	 	Intent intent = new Intent(context, SmsViewActivity.class);
-	 	context.startActivity(intent);
-}
+        //跳转到视图的Activity
+        Intent intent = new Intent(context, SmsViewActivity.class);
+        context.startActivity(intent);
+    }
 
-// ???ò????????????
-public void setOnItemClickListener(OnItemClickListener listener) {
-         //this.listener = listener;
-}
+    // 设置菜单项点击监听器
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        //this.listener = listener;
+    }
 
 
-// ????????????
-public void addItems(String[] items) {
+    // 批量添加菜单项
+    public void addItems(String[] items) {
         for (String s : items)
-                itemList.add(s);
-}
+            itemList.add(s);
+    }
 
-// ????????????
-public void addItem(String item) {
+    // 单个添加菜单项
+    public void addItem(String item) {
         itemList.add(item);
-}
+    }
 
-// ????? ???? pop??? parent ?????
-public void showAsDropDown(View parent) {
-		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//???????
+    // 下拉式 弹出 pop菜单 parent 右下角
+    public void showAsDropDown(View parent) {
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//屏幕宽度
         popupWindow.showAsDropDown(parent,
-        		 2*parent.getWidth(),
-        		 20);//???????
+                2*parent.getWidth(),
+                20);//垂直距离
 
-        // ??????
+        // 使其聚集
         popupWindow.setFocusable(true);
-        // ?????????????????
+        // 设置允许在外点击消失
         popupWindow.setOutsideTouchable(true);
-        // ?????
+        // 刷新状态
         popupWindow.update();
-	}
+    }
 
-// ??????
-public void dismiss() {
+    // 隐藏菜单
+    public void dismiss() {
         popupWindow.dismiss();
-	}
+    }
 
 
-//??????
-private final class PopAdapter extends BaseAdapter {
+    //适配器
+    private final class PopAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-                return itemList.size();
+            return itemList.size();
         }
 
         @Override
         public Object getItem(int position) {
-                return itemList.get(position);
+            return itemList.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-                return position;
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-                ViewHolder holder;
-                if (convertView == null) {
-                        convertView = inflater.inflate(R.layout.pop_menu_item, null);
-                        holder = new ViewHolder();
-                        convertView.setTag(holder);
-                        holder.groupItem = (TextView) convertView.findViewById(R.id.pop_item_text_view);
-                } else {
-                        holder = (ViewHolder) convertView.getTag();
-                }
-                holder.groupItem.setText(itemList.get(position));
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.pop_menu_item, null);
+                holder = new ViewHolder();
+                convertView.setTag(holder);
+                holder.groupItem = (TextView) convertView.findViewById(R.id.pop_item_text_view);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.groupItem.setText(itemList.get(position));
 
-                return convertView;
+            return convertView;
         }
 
         private final class ViewHolder {
-                TextView groupItem;
+            TextView groupItem;
         }
-}
+    }
 
 }
