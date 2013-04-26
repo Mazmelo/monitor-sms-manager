@@ -84,7 +84,7 @@ public class PopMenu implements OnItemClickListener {
         int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//屏幕宽度
         popupWindow.showAsDropDown(parent,
                 2*parent.getWidth(),
-                20);//垂直距离
+                10);//垂直距离
 
         // 使其聚集
         popupWindow.setFocusable(true);

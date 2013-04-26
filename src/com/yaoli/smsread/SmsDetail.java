@@ -75,7 +75,7 @@ public class SmsDetail {
 	{
 		Log.d(TAG, "loadMoreData begin getNum:"+getNum+" lastLoadTime:"+lastLoadTime);
 		if(getNum<=0 || isLoadCompleted) return true;
-		String[] projection = new String[] { "_id", /*"address", "person", */"body", "date", /*"type"*/ };
+		String[] projection = new String[] { "_id", /*"address", "person", */"body", "date", "read", "type" };
 		String selection="";
 		if(hasAddr)
 		{
@@ -114,12 +114,15 @@ public class SmsDetail {
 		int index_id = cur.getColumnIndex("_id");
 		int index_body = cur.getColumnIndex("body");
 		int index_date = cur.getColumnIndex("date");
+        int index_read = cur.getColumnIndex("read");
+        int index_type = cur.getColumnIndex("type");
 		Log.d(TAG, "index_id="+index_id+" index_body="+index_body+" index_date="+index_date);
 		do{
 			//去重
 			String id = cur.getString(index_id);
 			String body = cur.getString(index_body);
 			long date = cur.getLong(index_date);
+            int read = cur.getInt(index_read);//0:not read 1:read default is 0
 			if(setSmsId.contains(id))
 			{
 				Log.d(TAG, "Contains id="+id);
@@ -127,7 +130,7 @@ public class SmsDetail {
 			}
 			if(lastLoadTime>date || lastLoadTime ==0) lastLoadTime = date;
 			
-			SmsClass sms = new SmsClass(body, date);
+			SmsClass sms = new SmsClass(body, date, read==1);
 			int index = getSmsIndex(sms);
 			smsList.get(index).add(sms);//加入对应下标的短信集合中
 			setSmsId.add(id);
@@ -168,6 +171,7 @@ public class SmsDetail {
 		}
 		ArrayList<SmsClass> smsSeg = new ArrayList<SmsClass>();
 		long earlyTime = 0;
+        boolean isRead = true;//默认为已读
 		for(int i=0;i<maxSegNum;i++)
 		{
 			SmsClass seg =smsList.get(i).peek(); 
@@ -194,6 +198,7 @@ public class SmsDetail {
 				sBody.append(sms.body);
 				Log.d(TAG, "i="+i+" time="+sms.time+" "+sms.cur+"/"+sms.total+" "+sms.body);
 				smsList.get(i).poll();
+                if(sms.read==false) isRead = false;//只要有一段短信是未读的 就认为整条是未读的
 				if(i == sms.total) break;//拼接已完成
 			}
 		}
@@ -203,7 +208,7 @@ public class SmsDetail {
 			return null;
 		}
 		//Log.d(TAG, "sBody="+sBody);
-		return new SmsClass(sBody.toString(), earlyTime);
+		return new SmsClass(sBody.toString(), earlyTime, isRead);
 	}
 	public void init()
 	{
