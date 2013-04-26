@@ -30,7 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//²âÊÔÌá½»¹¦ÄÜ
+//æµ‹è¯•æäº¤åŠŸèƒ½
 public class MainActivity extends Activity implements OnItemClickListener{
 	private static final String TAG = "MainActivity";
 	final String SMS_URI_INBOX = "content://sms/";
@@ -47,9 +47,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Òş²ØÍ¨ÖªÀ¸£¨µç³Ø¡¢Ê±¼äµÈ£©
+        //éšè—é€šçŸ¥æ ï¼ˆç”µæ± ã€æ—¶é—´ç­‰ï¼‰
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  
-        //Òş²Ø³ÌĞò±êÌâÀ¸
+        //éšè—ç¨‹åºæ ‡é¢˜æ 
         
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -64,21 +64,21 @@ public class MainActivity extends Activity implements OnItemClickListener{
         //getSmsInPhone();
 		lv.setAdapter(myAdapter);
 		
-        /*Timer timer = new Timer(); //ÉèÖÃ¶¨Ê±Æ÷
+        /*Timer timer = new Timer(); //è®¾ç½®å®šæ—¶å™¨
 		timer.schedule(new TimerTask() {
 		@Override
-			public void run() { //µ¯³öÈí¼üÅÌµÄ´úÂë
+			public void run() { //å¼¹å‡ºè½¯é”®ç›˜çš„ä»£ç 
 				getSmsInPhone();
 			}
-		}, 100); //ÉèÖÃ50ºÁÃëµÄÊ±³¤*/
+		}, 100); //è®¾ç½®50æ¯«ç§’çš„æ—¶é•¿*/
 		
 		Handler handler=new Handler();
-		//handler.postDelayed(add,1);//·ÅÈë¶ÓÁĞ²¢ÑÓ³Ù3msÖ´ĞĞ
-		handler.post(add);//·ÅÈë¶ÓÁĞ
+		//handler.postDelayed(add,1);//æ”¾å…¥é˜Ÿåˆ—å¹¶å»¶è¿Ÿ3msæ‰§è¡Œ
+		handler.post(add);//æ”¾å…¥é˜Ÿåˆ—
 		
-		//µ¯³öÊ½²Ëµ¥
+		//å¼¹å‡ºå¼èœå•
 		popMenu = new PopMenu(MainActivity.this);
-		popMenu.addItems(new String[]{"È«²¿¸æ¾¯", "ÊÓÍ¼¸æ¾¯", "¸æ¾¯¼¯ºÏ", "ÆäËû¸æ¾¯"});
+		popMenu.addItems(new String[]{"å…¨éƒ¨å‘Šè­¦", "è§†å›¾å‘Šè­¦", "å‘Šè­¦é›†åˆ", "å…¶ä»–å‘Šè­¦"});
 		//popMenu.setOnItemClickListener(this);
 		
         lv.setOnItemClickListener(this);
@@ -94,8 +94,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
         		if(!strContact.equals(SelectedAddr))
         			strNameInTitle = strContact+"("+SelectedAddr+")";
         		Cursor cur = getContentResolver().query(Uri.parse("content://sms/"), new String[]{"_id", "address"}, "address="+"'"+SelectedAddr+"'", null, null);
-        		new AlertDialog.Builder(parent.getContext()).setTitle("É¾³ı"+strNameInTitle+"µÄÈ«²¿"+String.valueOf(cur.getCount())+"Ìõ¶ÌĞÅ?").
-                setPositiveButton("È·¶¨", 
+        		new AlertDialog.Builder(parent.getContext()).setTitle("åˆ é™¤"+strNameInTitle+"çš„å…¨éƒ¨"+String.valueOf(cur.getCount())+"æ¡çŸ­ä¿¡?").
+                setPositiveButton("ç¡®å®š", 
                 		new DialogInterface.OnClickListener() {
 							
 							@Override
@@ -104,12 +104,12 @@ public class MainActivity extends Activity implements OnItemClickListener{
 								getContentResolver().delete(Uri.parse("content://sms/conversations/"+SelectedThreadId), null, null);
 								appItems.remove(CurPos);
 								myAdapter.notifyDataSetChanged();
-								Toast.makeText(MainActivity.this, "É¾³ı³É¹¦", Toast.LENGTH_LONG).show();
+								Toast.makeText(MainActivity.this, "åˆ é™¤æˆåŠŸ", Toast.LENGTH_LONG).show();
 							}
-						}).setNegativeButton("È¡Ïû",
+						}).setNegativeButton("å–æ¶ˆ",
 								new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int witch) {
-								Toast.makeText(MainActivity.this, "È¡ÏûÁË", Toast.LENGTH_LONG).show();
+								Toast.makeText(MainActivity.this, "å–æ¶ˆäº†", Toast.LENGTH_LONG).show();
 							}
 						}).show();
                 cur.close();
@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     			startActivity(intent);*/
         		//toggleLeftBar();
         		Log.d(TAG, "btn_view clicked");
-        		//µ¯³ö´°¿Ú
+        		//å¼¹å‡ºçª—å£
         		popMenu.showAsDropDown(v);
         	}
         });
@@ -147,7 +147,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
         btnView = (Button)findViewById(R.id.btn_view);
         btnView.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		/*Ìø×ªµ½ÊÓÍ¼µÄActivity
+        		/*è·³è½¬åˆ°è§†å›¾çš„Activity
         		 * Intent intent = new Intent(MainActivity.this, SmsViewActivity.class);
     			startActivity(intent);*/
         		//popMenu.setOnItemClickListener(MainActivity.this);
@@ -257,7 +257,7 @@ public class MainActivity extends Activity implements OnItemClickListener{
     }
     
     /*
-     * ¸ù¾İµç»°ºÅÂëÈ¡µÃÁªÏµÈËµÄÃû×Ö
+     * æ ¹æ®ç”µè¯å·ç å–å¾—è”ç³»äººçš„åå­—
      * */
     public String getContactWithTelNum(String telNum)
     {

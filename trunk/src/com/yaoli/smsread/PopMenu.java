@@ -45,11 +45,11 @@ public class PopMenu implements OnItemClickListener {
         listView.setOnItemClickListener(this);
 
         popupWindow = new PopupWindow(view, 
-                       // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //��������Ҫ�Լ�ָ����ʹ�� WRAP_CONTENT ��ܴ�
+                       // context.getResources().getDimensionPixelSize(R.dimen.popmenu_width),  //???????????????????? WRAP_CONTENT ?????
         		LayoutParams.WRAP_CONTENT,
         		LayoutParams.WRAP_CONTENT);
         Log.d(TAG, "PopupWindow OK");
-        // �����Ϊ�˵��������Back��Ҳ��ʹ����ʧ�����Ҳ�����Ӱ����ı�����������ģ�
+        // ????????????????Back?????????????????????????????????????????
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -57,50 +57,50 @@ public class PopMenu implements OnItemClickListener {
                 listener.onItemClick(position);
         }*/
         dismiss();
-		//��ת����ͼ��Activity
+		//??????????Activity
 	 	Intent intent = new Intent(context, SmsViewActivity.class);
 	 	context.startActivity(intent);
 }
 
-// ���ò˵�����������
+// ???ò????????????
 public void setOnItemClickListener(OnItemClickListener listener) {
          //this.listener = listener;
 }
 
 
-// ������Ӳ˵���
+// ????????????
 public void addItems(String[] items) {
         for (String s : items)
                 itemList.add(s);
 }
 
-// ������Ӳ˵���
+// ????????????
 public void addItem(String item) {
         itemList.add(item);
 }
 
-// ����ʽ ���� pop�˵� parent ���½�
+// ????? ???? pop??? parent ?????
 public void showAsDropDown(View parent) {
-		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//��Ļ���
+		int screenWidth = context.getResources().getDisplayMetrics().widthPixels;//???????
         popupWindow.showAsDropDown(parent,
         		 2*parent.getWidth(),
-        		 20);//��ֱ����
+        		 20);//???????
 
-        // ʹ��ۼ�
+        // ??????
         popupWindow.setFocusable(true);
-        // ����������������ʧ
+        // ?????????????????
         popupWindow.setOutsideTouchable(true);
-        // ˢ��״̬
+        // ?????
         popupWindow.update();
 	}
 
-// ���ز˵�
+// ??????
 public void dismiss() {
         popupWindow.dismiss();
 	}
 
 
-//������
+//??????
 private final class PopAdapter extends BaseAdapter {
         @Override
         public int getCount() {

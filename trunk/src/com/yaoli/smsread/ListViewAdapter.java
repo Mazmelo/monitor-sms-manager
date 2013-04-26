@@ -71,7 +71,7 @@ public class ListViewAdapter extends BaseAdapter{
 		holder.imageCreateMsg = (ImageView)convertView.findViewById(R.id.CreateImage);
 		holder.tv_create_msg = (TextView)convertView.findViewById(R.id.CreateMsg);
 		holder.imageCreateMsg.setBackgroundResource(R.drawable.create_icon);
-		holder.tv_create_msg.setText("´´½¨ÐÂÏûÏ¢");
+		holder.tv_create_msg.setText("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢");
 	}
 	public View setupHolder(int position, View convertView, ViewHolder holder)
 	{

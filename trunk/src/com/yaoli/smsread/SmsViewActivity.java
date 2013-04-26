@@ -27,7 +27,7 @@ public class SmsViewActivity extends Activity{
 	ArrayList<HashMap<String, Object>>  listViewData;
 	Button btnBack;
 	SmsDetail smsDetail;
-	HashMap<String, Integer> mapViewName;//ÓÃÓÚÈ¥ÖØµÄÊÓÍ¼Ãû³Æ IntegerÎªÊÓÍ¼ÔÚÁĞ±íÖĞµÄÎ»ÖÃ
+	HashMap<String, Integer> mapViewName;//ç”¨äºå»é‡çš„è§†å›¾åç§° Integerä¸ºè§†å›¾åœ¨åˆ—è¡¨ä¸­çš„ä½ç½®
 	Handler handler;
 	String addr;
 	int pos = 0;
@@ -53,8 +53,8 @@ public class SmsViewActivity extends Activity{
 		smsDetail = new SmsDetail(SmsViewActivity.this);
 		//getSmsList();
 		handler = new Handler();
-		//handler.postDelayed(add,1);//·ÅÈë¶ÓÁĞ²¢ÑÓ³ÙÖ´ĞĞ
-		handler.post(add);//·ÅÈë¶ÓÁĞ
+		//handler.postDelayed(add,1);//æ”¾å…¥é˜Ÿåˆ—å¹¶å»¶è¿Ÿæ‰§è¡Œ
+		handler.post(add);//æ”¾å…¥é˜Ÿåˆ—
 		
 		Log.d(TAG, "getSmsList OK");
 		listViewAdapter = getSmsView();
@@ -98,13 +98,13 @@ public class SmsViewActivity extends Activity{
 		{
 			sms = smsDetail.getOneSms();
 			if (sms == null) return 1;
-			//³É¹¦È¡µÃÒ»ÌõÍêÕûµÄ¶ÌĞÅ
+			//æˆåŠŸå–å¾—ä¸€æ¡å®Œæ•´çš„çŸ­ä¿¡
 			Log.d(TAG, "i="+i+" "+sms.body);
 			String viewName = getViewName(sms.body);
 			Log.d(TAG, "viewName="+viewName);
 			if(mapViewName.containsKey(viewName)) 
 			{
-				//¶Ô¼ÆÊıÖµ¼Ó1
+				//å¯¹è®¡æ•°å€¼åŠ 1
 				Integer intpos = mapViewName.get(viewName);
 				String s = listViewData.get(intpos.intValue()).get("ItemCount").toString();
 				Integer integer = Integer.parseInt(s.substring(1, s.length()-1));
@@ -123,7 +123,7 @@ public class SmsViewActivity extends Activity{
 				map.put("ItemView", viewName);
 				map.put("ItemTime", t.toLabel());
 				map.put("ItemText", sms.body);
-				map.put("ItemCount", "(1)");//ÖÁÉÙÎª1
+				map.put("ItemCount", "(1)");//è‡³å°‘ä¸º1
 				listViewData.add(map);
 			}
 		}

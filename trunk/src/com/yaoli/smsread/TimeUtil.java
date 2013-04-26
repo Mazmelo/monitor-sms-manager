@@ -11,6 +11,7 @@ public class TimeUtil {
 	{
 		longTime = lTime;
 	}
+    //这是Utf8
 	public String toLabel()
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd", Locale.US);

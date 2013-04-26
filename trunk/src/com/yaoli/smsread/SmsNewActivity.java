@@ -61,12 +61,12 @@ public class SmsNewActivity extends Activity{
 				String recv = etRecv.getText().toString();
 				if(recv.length()==0)
 				{
-					Toast.makeText(SmsNewActivity.this,"Î´Ñ¡ÔñÁªÏµÈË", Toast.LENGTH_LONG).show();
+					Toast.makeText(SmsNewActivity.this,"æœªé€‰æ‹©è”ç³»äºº", Toast.LENGTH_LONG).show();
 					return ;
 				}
 				if(text.length()==0)
 				{
-					Toast.makeText(SmsNewActivity.this,"ÄÚÈİ²»ÄÜÎª¿Õ", Toast.LENGTH_LONG).show();
+					Toast.makeText(SmsNewActivity.this,"å†…å®¹ä¸èƒ½ä¸ºç©º", Toast.LENGTH_LONG).show();
 					return ;
 				}
 
@@ -74,7 +74,7 @@ public class SmsNewActivity extends Activity{
 				List<String> list = sms.divideMessage(etNewText.getText().toString());
 				for(String t:list)
 					sms.sendTextMessage(etRecv.getText().toString(), null, t, null, null);
-				//·¢ËÍÍê³ÉÖ®ºó ĞèÒª´æÈëÊı¾İ¿â
+				//å‘é€å®Œæˆä¹‹å éœ€è¦å­˜å…¥æ•°æ®åº“
 				ContentValues values = new ContentValues();
 				values.put("date", System.currentTimeMillis());
 				values.put("read", 0);
@@ -82,20 +82,20 @@ public class SmsNewActivity extends Activity{
 				values.put("address", etRecv.getText().toString());
 				values.put("body", etNewText.getText().toString());
 				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-				Toast.makeText(SmsNewActivity.this, "ÕıÔÚ·¢ËÍ...", Toast.LENGTH_LONG).show();
+				Toast.makeText(SmsNewActivity.this, "æ­£åœ¨å‘é€...", Toast.LENGTH_LONG).show();
 				SmsNewActivity.this.finish();
 			}
 		});
 		
-		/*Timer timer = new Timer(); //ÉèÖÃ¶¨Ê±Æ÷
+		/*Timer timer = new Timer(); //è®¾ç½®å®šæ—¶å™¨
 		timer.schedule(new TimerTask() {
 		@Override
-			public void run() { //µ¯³öÈí¼üÅÌµÄ´úÂë
+			public void run() { //å¼¹å‡ºè½¯é”®ç›˜çš„ä»£ç 
 				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.showSoftInput(et, InputMethodManager.RESULT_SHOWN);
 				imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 			}
-		}, 300); //ÉèÖÃ300ºÁÃëµÄÊ±³¤*/
+		}, 300); //è®¾ç½®300æ¯«ç§’çš„æ—¶é•¿*/
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public class SmsNewActivity extends Activity{
 			}
 		}
 	}
-	//»ñÈ¡ÁªÏµÈËµç»°
+	//è·å–è”ç³»äººç”µè¯
 	private String getContactPhone(Cursor cursor)
 	{
 		int phoneColumn = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);  
@@ -127,10 +127,10 @@ public class SmsNewActivity extends Activity{
 		//System.out.print(phoneNum);
 		if (phoneNum > 0)
 		{
-		// »ñµÃÁªÏµÈËµÄIDºÅ
+		// è·å¾—è”ç³»äººçš„IDå·
 			int idColumn = cursor.getColumnIndex(ContactsContract.Contacts._ID);
 			String contactId = cursor.getString(idColumn);
-				// »ñµÃÁªÏµÈËµÄµç»°ºÅÂëµÄcursor;
+				// è·å¾—è”ç³»äººçš„ç”µè¯å·ç çš„cursor;
 				Cursor phones = getContentResolver().query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 				null,
@@ -140,7 +140,7 @@ public class SmsNewActivity extends Activity{
 				//allPhoneNum = new ArrayList<String>(phoneCount);
 				if (phones.moveToFirst())
 				{
-						// ±éÀúËùÓĞµÄµç»°ºÅÂë
+						// éå†æ‰€æœ‰çš„ç”µè¯å·ç 
 						for (;!phones.isAfterLast();phones.moveToNext())
 						{                                            
 							int index = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);

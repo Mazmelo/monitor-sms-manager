@@ -42,7 +42,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 	private SimpleAdapter mSimpleAdapter;
 	private ListView lv;
 	private ArrayList<HashMap<String,String>> list;
-	HashSet<String> setId;//Ã¿Î»ÁªÏµÈËËùÓĞ¶ÌĞÅµÄid¼¯ºÏ
+	HashSet<String> setId;//æ¯ä½è”ç³»äººæ‰€æœ‰çŸ­ä¿¡çš„idé›†åˆ
 	private long lastTime;
 	private boolean loadComplete;
 	private int lastVisibleIndex;
@@ -51,21 +51,21 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 	EditText et;
 	SmsManager sms;
 	Button btnReply;
-	private boolean sendAble;//µ±Ç°°´¼ü´¦ÓÚ·¢ËÍ×´Ì¬»¹ÊÇ»Ø¸´×´Ì¬
+	private boolean sendAble;//å½“å‰æŒ‰é”®å¤„äºå‘é€çŠ¶æ€è¿˜æ˜¯å›å¤çŠ¶æ€
 	
 	private static final String WX_APP_ID = "wxac5ff3d0320855de";
 	private IWXAPI wxapi;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	    //×Ô¶¨Òå³ÌĞò±êÌâÀ¸
+	    //è‡ªå®šä¹‰ç¨‹åºæ ‡é¢˜æ 
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.activity_sms_detail);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_detail); 
 		
-		sendAble = false;//Ä¬ÈÏÊÇ»Ø¸´×´Ì¬
+		sendAble = false;//é»˜è®¤æ˜¯å›å¤çŠ¶æ€
 		et = (EditText)findViewById(R.id.et_msg);
-		//È¡µÃ»Ø»÷Item´øÀ´µÄÊı¾İ
+		//å–å¾—å›å‡»Itemå¸¦æ¥çš„æ•°æ®
 		Bundle bundle = getIntent().getExtras();
 		strAddress = bundle.getString(getText(R.string.sms_address).toString());
 		if(strAddress.startsWith("+"))
@@ -75,10 +75,10 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		if(strAddress.equals(strContact)) strShowAddr = strContact;
 		else strShowAddr = strContact+"(" + strAddress + ")"; 
 		
-		//±êÌâÀ¸µÄÉèÖÃ
+		//æ ‡é¢˜æ çš„è®¾ç½®
 		TextView tv = (TextView)findViewById(R.id.sms_address);
 		tv.setText(strShowAddr);
-		//·µ»Ø°´Å¥
+		//è¿”å›æŒ‰é’®
 		Button btnBack = (Button)findViewById(R.id.bt_back);
 		btnBack.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
@@ -104,7 +104,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		lv.setAdapter(mSimpleAdapter);  
 		lv.setOnScrollListener(this); 
 		
-		//×¢²áµ½Î¢ĞÅ
+		//æ³¨å†Œåˆ°å¾®ä¿¡
 		wxapi = WXAPIFactory.createWXAPI(SmsDetailActivity.this, WX_APP_ID, true);
 		wxapi.registerApp(WX_APP_ID);
 		/*lv.setOnItemClickListener(new OnItemClickListener() {
@@ -116,7 +116,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 			 String date = map.get("ItemDate");
 			 String text = map.get("ItemText");
 			 
-			 //·¢ËÍÄÚÈİµ½Î¢ĞÅ
+			 //å‘é€å†…å®¹åˆ°å¾®ä¿¡
 			 WXTextObject textObj = new WXTextObject();
 			 textObj.text = text;
 			 
@@ -144,7 +144,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 	        if(et.getText().length()==0)
 	        {
 	    		et.setVisibility(View.GONE);
-	    		btn.setText("»Ø¸´");
+	    		btn.setText("å›å¤");
 	    		sendAble = false;
 	        }
 		}
@@ -207,7 +207,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		if(cur.getCount()<getNum)
 		{
 			if(lastTime!=0)
-				Toast.makeText(SmsDetailActivity.this, "È«²¿¼ÓÔØÍê±Ï", Toast.LENGTH_LONG).show();
+				Toast.makeText(SmsDetailActivity.this, "å…¨éƒ¨åŠ è½½å®Œæ¯•", Toast.LENGTH_LONG).show();
 			loadComplete = true;
 		}
 		if(!cur.moveToFirst())
@@ -221,7 +221,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		int index_Date = cur.getColumnIndex("date");
 		//int index_Type = cur.getColumnIndex("type");
 		do{
-			//Ê×ÏÈÈ¥ÖØ
+			//é¦–å…ˆå»é‡
 			String id = cur.getString(index_id);
 			if(setId.contains(id))
 			{
@@ -246,7 +246,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		}while(cur.moveToNext());
 		if(loadComplete && !smsDetail.isEmpty())
 		{
-			//°Ñ×îºóµÄ¶ÌĞÅÄÚÈİÊä³ö
+			//æŠŠæœ€åçš„çŸ­ä¿¡å†…å®¹è¾“å‡º
 			HashMap<String, String> map = new HashMap<String, String>();  
 			map.put("ItemDate", smsDetail.getDate());
 			map.put("ItemText", smsDetail.toString());
@@ -272,13 +272,13 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 			et.requestFocus();
 			InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(INPUT_METHOD_SERVICE); 
 	        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-			btnReply.setText("·¢ËÍ");
+			btnReply.setText("å‘é€");
 		}
 		else
 		{
 			if(et.getText().length()==0)
 			{
-				Toast.makeText(this, "·¢ËÍµÄÄÚÈİ²»ÄÜÎª¿Õ", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "å‘é€çš„å†…å®¹ä¸èƒ½ä¸ºç©º", Toast.LENGTH_LONG).show();
 			}
 			else
 			{
@@ -286,7 +286,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 				List<String> list = sms.divideMessage(et.getText().toString());
 				for(String text:list)
 					sms.sendTextMessage(strAddress, null, text, null, null);
-				//·¢ËÍÍê³ÉÖ®ºó ĞèÒª´æÈëÊı¾İ¿â
+				//å‘é€å®Œæˆä¹‹å éœ€è¦å­˜å…¥æ•°æ®åº“
 				ContentValues values = new ContentValues();
 				values.put("date", System.currentTimeMillis());
 				values.put("read", 0);
@@ -294,7 +294,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 				values.put("address", strAddress);
 				values.put("body", et.getText().toString());
 				getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-				Toast.makeText(this, "ÕıÔÚ·¢ËÍ...", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "æ­£åœ¨å‘é€...", Toast.LENGTH_LONG).show();
 				this.finish();
 			}
 		}
