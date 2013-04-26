@@ -32,7 +32,7 @@ public class ViewDetailActivity extends Activity {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_view); 
 		
 		Log.d(TAG, "setTitle OK");
-		//È¡µÃ»Ø»÷Item´øÀ´µÄÊı¾İ
+		//å–å¾—å›å‡»Itemå¸¦æ¥çš„æ•°æ®
 		Bundle bundle = getIntent().getExtras();
 		addr = bundle.getString("ViewDetailAddr");
 		viewName = bundle.getString("ViewName");
@@ -53,8 +53,8 @@ public class ViewDetailActivity extends Activity {
 		listView.setAdapter(listViewAdapter);
 		
 		handler = new Handler();
-		//handler.postDelayed(add,1);//·ÅÈë¶ÓÁĞ²¢ÑÓ³ÙÖ´ĞĞ
-		handler.post(add);//·ÅÈë¶ÓÁĞ
+		//handler.postDelayed(add,1);//æ”¾å…¥é˜Ÿåˆ—å¹¶å»¶è¿Ÿæ‰§è¡Œ
+		handler.post(add);//æ”¾å…¥é˜Ÿåˆ—
 		
 		btnBack = (Button)findViewById(R.id.bt_view_back);
 		btnBack.setOnClickListener(new View.OnClickListener() {

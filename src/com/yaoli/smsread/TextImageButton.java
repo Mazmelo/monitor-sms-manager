@@ -8,8 +8,8 @@ import android.util.Log;
 import android.widget.ImageButton;
 
 public class TextImageButton extends ImageButton{
-	private String text = null;  //ÒªÏÔÊ¾µÄÎÄ×Ö
-    private int color;               //ÎÄ×ÖµÄÑÕÉ«
+	private String text = null;  //è¦æ˜¾ç¤ºçš„æ–‡å­—
+    private int color;               //æ–‡å­—çš„é¢œè‰²
     Paint paint;
     private static final String TAG = "TextImageButton";
     public TextImageButton(Context context, AttributeSet attrs) {
@@ -19,11 +19,11 @@ public class TextImageButton extends ImageButton{
     }
      
     public void setText(String text){
-        this.text = text;       //ÉèÖÃÎÄ×Ö
+        this.text = text;       //è®¾ç½®æ–‡å­—
     }
      
     public void setColor(int color){
-        this.color = color;    //ÉèÖÃÎÄ×ÖÑÕÉ«
+        this.color = color;    //è®¾ç½®æ–‡å­—é¢œè‰²
     }
      
     @Override
@@ -33,6 +33,6 @@ public class TextImageButton extends ImageButton{
         /*paint=new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(color);
-        canvas.drawText(text, 15, 20, paint);  //»æÖÆÎÄ×Ö*/
+        canvas.drawText(text, 15, 20, paint);  //ç»˜åˆ¶æ–‡å­—*/
     }
 }

@@ -18,21 +18,21 @@ import android.widget.Toast;
 
 public class SmsDetail {
 	long lastTime, oldestTime;
-	long lastLoadTime;//ÒÑ¼ÓÔØ¶ÌĞÅÖĞµÄ×îºóÒ»ÌõµÄÊ±¼ä ÓÃÓÚ·ÖÒ³¼ÓÔØÊı¾İ
-	boolean complete;//ÊÇ·ñÒÑ¾­ÊÕ¼¯ÆëÒ»ÌõÍêÕûµÄ¶ÌĞÅÁË
-	SmsClass curSms;//µ±Ç°Î´´¦ÀíµÄ¶ÌĞÅ
-	ArrayList<Queue<SmsClass>> smsList;//ÏûÏ¢¶ÓÁĞµÄÊı×é Êı×éÏÂ±ê±íÊ¾¶ÎÊı
-	ArrayList<SmsClass> fullSmsList;//ÍêÕûµÄ¶ÌĞÅ¼¯ºÏ
-	Queue<SmsClass> qBody1;//±£´æÏûÏ¢µÄµÚÒ»¶Î
-	Queue<SmsClass> qBody2;//±£´æÏûÏ¢µÄµÚ¶ş¶Î
-	Queue<SmsClass> qBody3;//±£´æÏûÏ¢µÄµÚÈı¶Î
+	long lastLoadTime;//å·²åŠ è½½çŸ­ä¿¡ä¸­çš„æœ€åä¸€æ¡çš„æ—¶é—´ ç”¨äºåˆ†é¡µåŠ è½½æ•°æ®
+	boolean complete;//æ˜¯å¦å·²ç»æ”¶é›†é½ä¸€æ¡å®Œæ•´çš„çŸ­ä¿¡äº†
+	SmsClass curSms;//å½“å‰æœªå¤„ç†çš„çŸ­ä¿¡
+	ArrayList<Queue<SmsClass>> smsList;//æ¶ˆæ¯é˜Ÿåˆ—çš„æ•°ç»„ æ•°ç»„ä¸‹æ ‡è¡¨ç¤ºæ®µæ•°
+	ArrayList<SmsClass> fullSmsList;//å®Œæ•´çš„çŸ­ä¿¡é›†åˆ
+	Queue<SmsClass> qBody1;//ä¿å­˜æ¶ˆæ¯çš„ç¬¬ä¸€æ®µ
+	Queue<SmsClass> qBody2;//ä¿å­˜æ¶ˆæ¯çš„ç¬¬äºŒæ®µ
+	Queue<SmsClass> qBody3;//ä¿å­˜æ¶ˆæ¯çš„ç¬¬ä¸‰æ®µ
 	String sbody;
 	Context context;
-	String addr;//µ±Ç°ÁªÏµÈËµÄºÅÂë
+	String addr;//å½“å‰è”ç³»äººçš„å·ç 
 	boolean hasAddr;
-	HashSet<String> setSmsId;//µ±Ç°ÁªÏµÈËËùÓĞ¶ÌĞÅµÄid¼¯ºÏ
-	boolean isLoadCompleted;//È«²¿¼ÓÔØÍê£¿
-	int curNum;//µ±Ç°ÒÑÈ¡»ØµÄ¶ÌĞÅÌõÊı
+	HashSet<String> setSmsId;//å½“å‰è”ç³»äººæ‰€æœ‰çŸ­ä¿¡çš„idé›†åˆ
+	boolean isLoadCompleted;//å…¨éƒ¨åŠ è½½å®Œï¼Ÿ
+	int curNum;//å½“å‰å·²å–å›çš„çŸ­ä¿¡æ¡æ•°
 	private static final String TAG = "SmsDetailClass";
 	private static final int maxSegNum=10;
 	public SmsDetail(Context con)
@@ -51,7 +51,7 @@ public class SmsDetail {
 		hasAddr = false;
 		Log.d(TAG, "Sms Detail Class construct Ok");
 	}
-	//È¡µÃÒ»Ìõ¶ÌĞÅµÄÏÂ±ê£¬Èç¹ûÎ´·Ö¶Î£¬Ôò·µ»Ø0£¬·ñÔò·µ»Ø¸Ã¶ÌĞÅÔÚºÏ²¢ºóÍêÕû¶ÌĞÅÖĞµÄÏÂ±ê
+	//å–å¾—ä¸€æ¡çŸ­ä¿¡çš„ä¸‹æ ‡ï¼Œå¦‚æœæœªåˆ†æ®µï¼Œåˆ™è¿”å›0ï¼Œå¦åˆ™è¿”å›è¯¥çŸ­ä¿¡åœ¨åˆå¹¶åå®Œæ•´çŸ­ä¿¡ä¸­çš„ä¸‹æ ‡
 	public int getSmsIndex(SmsClass sms)
 	{
 		sms.cur = 0;
@@ -64,13 +64,13 @@ public class SmsDetail {
 			sms.total = Integer.valueOf(sms.body.substring(sep+1, sep+2)).intValue();
 			Log.d(TAG, "cur="+sms.cur+" total="+sms.total+" time="+sms.time+" body="+sms.body);
 			sep += 2;
-			if(sms.body.charAt(sep)==')') sep += 1;//¹ıÂËµô£©
+			if(sms.body.charAt(sep)==')') sep += 1;//è¿‡æ»¤æ‰ï¼‰
 			sms.body = sms.body.substring(sep);
 		}
 		return sms.cur;
 	}
-	//´ÓÊı¾İ¿âÖĞ¼ÓÔØ¸ü¶àµÄ¶ÌĞÅÊı¾İ
-	//·µ»Øfalse±íÊ¾ÓĞÊı¾İ ·µ»Øtrue±íÊ¾È«²¿¼ÓÔØÍêÁË
+	//ä»æ•°æ®åº“ä¸­åŠ è½½æ›´å¤šçš„çŸ­ä¿¡æ•°æ®
+	//è¿”å›falseè¡¨ç¤ºæœ‰æ•°æ® è¿”å›trueè¡¨ç¤ºå…¨éƒ¨åŠ è½½å®Œäº†
 	public boolean loadMoreData(int getNum)
 	{
 		Log.d(TAG, "loadMoreData begin getNum:"+getNum+" lastLoadTime:"+lastLoadTime);
@@ -103,7 +103,7 @@ public class SmsDetail {
 		if(cur.getCount()<getNum)
 		{
 			/*if(lastLoadTime!=0)
-				Toast.makeText(context, "È«²¿¼ÓÔØÍê±Ï", Toast.LENGTH_LONG).show();*/
+				Toast.makeText(context, "å…¨éƒ¨åŠ è½½å®Œæ¯•", Toast.LENGTH_LONG).show();*/
 			isLoadCompleted = true;
 		}
 		if(!cur.moveToFirst())
@@ -116,7 +116,7 @@ public class SmsDetail {
 		int index_date = cur.getColumnIndex("date");
 		Log.d(TAG, "index_id="+index_id+" index_body="+index_body+" index_date="+index_date);
 		do{
-			//È¥ÖØ
+			//å»é‡
 			String id = cur.getString(index_id);
 			String body = cur.getString(index_body);
 			long date = cur.getLong(index_date);
@@ -129,7 +129,7 @@ public class SmsDetail {
 			
 			SmsClass sms = new SmsClass(body, date);
 			int index = getSmsIndex(sms);
-			smsList.get(index).add(sms);//¼ÓÈë¶ÔÓ¦ÏÂ±êµÄ¶ÌĞÅ¼¯ºÏÖĞ
+			smsList.get(index).add(sms);//åŠ å…¥å¯¹åº”ä¸‹æ ‡çš„çŸ­ä¿¡é›†åˆä¸­
 			setSmsId.add(id);
 		}while(cur.moveToNext());
 		Log.d(TAG, "get Data completed="+isLoadCompleted);
@@ -149,7 +149,7 @@ public class SmsDetail {
 		{
 			segNum += smsList.get(i).size();
 		}
-		return !isLoadCompleted && //Èç¹û¼ÓÔØÍêÁË ·µ»Øfalse ·ñÔòÈÎºÎÒ»¸ö¶ÌĞÅÏÂ±êµÄ¶ÓÁĞÎª¿Õ ·µ»Ø true
+		return !isLoadCompleted && //å¦‚æœåŠ è½½å®Œäº† è¿”å›false å¦åˆ™ä»»ä½•ä¸€ä¸ªçŸ­ä¿¡ä¸‹æ ‡çš„é˜Ÿåˆ—ä¸ºç©º è¿”å› true
 				(smsList.get(0).size() < 3) &&
 				(segNum < 10);
 	}
@@ -158,7 +158,7 @@ public class SmsDetail {
 		if(t1 > t2) return t1-t2;
 		else return t2-t1;
 	}
-	//È¡µÃÒ»ÌõÍêÕûµÄ¶ÌĞÅ
+	//å–å¾—ä¸€æ¡å®Œæ•´çš„çŸ­ä¿¡
 	public SmsClass getOneSms()
 	{
 		if(needLoadData()) 
@@ -173,19 +173,19 @@ public class SmsDetail {
 			SmsClass seg =smsList.get(i).peek(); 
 			if(seg != null && seg.time > earlyTime)
 			{
-				//ÓÅÏÈ·µ»ØÊ±¼äÖµ´óµÄ
+				//ä¼˜å…ˆè¿”å›æ—¶é—´å€¼å¤§çš„
 				earlyTime = seg.time;
 			}
 			smsSeg.add(seg);
 		}
-		//·µ»ØÒ»ÌõÍêÕûµÄ¶ÌĞÅ
+		//è¿”å›ä¸€æ¡å®Œæ•´çš„çŸ­ä¿¡
 		if(smsSeg.get(0) != null && smsSeg.get(0).time == earlyTime)
 		{
 			smsList.get(0).poll();
 			return smsSeg.get(0);
 		}
-		StringBuilder sBody = new StringBuilder();//ºÏ²¢¶ø³ÉµÄ¶ÌĞÅ
-		//¿ªÊ¼Æ´½Ó
+		StringBuilder sBody = new StringBuilder();//åˆå¹¶è€Œæˆçš„çŸ­ä¿¡
+		//å¼€å§‹æ‹¼æ¥
 		for(int i=1;i<maxSegNum;i++)
 		{
 			SmsClass sms = smsSeg.get(i);
@@ -194,7 +194,7 @@ public class SmsDetail {
 				sBody.append(sms.body);
 				Log.d(TAG, "i="+i+" time="+sms.time+" "+sms.cur+"/"+sms.total+" "+sms.body);
 				smsList.get(i).poll();
-				if(i == sms.total) break;//Æ´½ÓÒÑÍê³É
+				if(i == sms.total) break;//æ‹¼æ¥å·²å®Œæˆ
 			}
 		}
 		if(sBody.toString().length()==0) 
@@ -212,7 +212,7 @@ public class SmsDetail {
 		qBody3 = new LinkedList<SmsClass>();
 		Log.d(TAG, "Sms Detail Init OK");
 	} 
-	/*ÅĞ¶Ïµ±Ç°¶ÌĞÅÊÇ·ñÎª¿Õ*/
+	/*åˆ¤æ–­å½“å‰çŸ­ä¿¡æ˜¯å¦ä¸ºç©º*/
 	public boolean isEmpty()
 	{
 		return (qBody1.peek()==null && qBody2.peek()==null && qBody3.peek()==null && curSms==null);
@@ -227,7 +227,7 @@ public class SmsDetail {
 
 		if(lastTime!=0 && lastTime+10000<time)
 		{
-			//¸ôÁË10sµÄ¶ÌĞÅ ÈÏÎªÊÇÁíÒ»Ìõ
+			//éš”äº†10sçš„çŸ­ä¿¡ è®¤ä¸ºæ˜¯å¦ä¸€æ¡
 			complete = true;
 			curSms = sms;
 			lastTime = sms.time;
@@ -241,7 +241,7 @@ public class SmsDetail {
 			sms.total = Integer.valueOf(body.substring(index+1, index+2)).intValue();
 			Log.d(TAG, "cur="+sms.cur+" total="+sms.total);
 			index += 2;
-			if(body.charAt(index)==')') index += 1;//¹ıÂËµô£©
+			if(body.charAt(index)==')') index += 1;//è¿‡æ»¤æ‰ï¼‰
 			switch(sms.cur)
 			{
 			case 1:
@@ -262,7 +262,7 @@ public class SmsDetail {
 			}
 			if(qBody1.peek() != null && qBody2.peek() != null && qBody3.peek() != null)
 			{
-				//±íÃ÷ÒÑÊÕ¼¯ÆëÁËÒ»Ìõ¶ÌĞÅµÄÈı¶Î
+				//è¡¨æ˜å·²æ”¶é›†é½äº†ä¸€æ¡çŸ­ä¿¡çš„ä¸‰æ®µ
 				complete = true;
 			}
 		} 

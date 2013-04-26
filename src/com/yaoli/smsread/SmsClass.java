@@ -8,10 +8,10 @@ public class SmsClass {
 		body = _body;
 		time = _time;
 	}
-	String id;//¶ÌĞÅµÄid
-	String addr;//¶ÌĞÅµÄºÅÂë
-	String body;//¶ÌĞÅµÄÄÚÈİ
-	long time;//¶ÌĞÅµÄÊ±¼ä ms
-	Date date;//¶ÌĞÅµÄÈÕÆÚ±íÊ¾
-	int cur,total;//ÕâÌõ¶ÌĞÅÊÇÆäÖĞµÄcur¶Î ×Ü¹²ÓĞtotal¶Î
+	String id;//çŸ­ä¿¡çš„id
+	String addr;//çŸ­ä¿¡çš„å·ç 
+	String body;//çŸ­ä¿¡çš„å†…å®¹
+	long time;//çŸ­ä¿¡çš„æ—¶é—´ ms
+	Date date;//çŸ­ä¿¡çš„æ—¥æœŸè¡¨ç¤º
+	int cur,total;//è¿™æ¡çŸ­ä¿¡æ˜¯å…¶ä¸­çš„curæ®µ æ€»å…±æœ‰totalæ®µ
 }

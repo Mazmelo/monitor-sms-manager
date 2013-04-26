@@ -17,14 +17,14 @@ public class SmsReceiver extends BroadcastReceiver
 				.equals(intent.getAction()))
 		{
 			StringBuilder sb = new StringBuilder();
-			//½ÓÊÕÓÉSMS´«¹ıÀ´µÄÊı¾İ
+			//æ¥æ”¶ç”±SMSä¼ è¿‡æ¥çš„æ•°æ®
 			Bundle bundle = intent.getExtras();
-			// ÅĞ¶ÏÊÇ·ñÓĞÊı¾İ
+			// åˆ¤æ–­æ˜¯å¦æœ‰æ•°æ®
 			if (bundle != null)
 			{
-				//  Í¨¹ıpdus¿ÉÒÔ»ñµÃ½ÓÊÕµ½µÄËùÓĞ¶ÌĞÅÏûÏ¢
+				//  é€šè¿‡pduså¯ä»¥è·å¾—æ¥æ”¶åˆ°çš„æ‰€æœ‰çŸ­ä¿¡æ¶ˆæ¯
 				Object[] objArray = (Object[]) bundle.get("pdus");
-				//¹¹½¨¶ÌĞÅ¶ÔÏóarray,²¢ÒÀ¾İÊÕµ½µÄ¶ÔÏó³¤¶ÈÀ´´´½¨arrayµÄ´óĞ¡
+				//æ„å»ºçŸ­ä¿¡å¯¹è±¡array,å¹¶ä¾æ®æ”¶åˆ°çš„å¯¹è±¡é•¿åº¦æ¥åˆ›å»ºarrayçš„å¤§å°
 				SmsMessage[] messages = new SmsMessage[objArray.length];
 				for (int i = 0; i < objArray.length; i++)
 				{
@@ -32,14 +32,14 @@ public class SmsReceiver extends BroadcastReceiver
 							.createFromPdu((byte[]) objArray[i]);
 				}
 
-				//½«ËÍÀ´µÄ¶ÌĞÅºÏ²¢×Ô¶¨ÒåĞÅÏ¢ÓÚStringBuilderµ±ÖĞ
+				//å°†é€æ¥çš„çŸ­ä¿¡åˆå¹¶è‡ªå®šä¹‰ä¿¡æ¯äºStringBuilderå½“ä¸­
 				for (SmsMessage currentMessage : messages)
 				{
-					sb.append("¶ÌĞÅÀ´Ô´:");
-					// »ñµÃ½ÓÊÕ¶ÌĞÅµÄµç»°ºÅÂë
+					sb.append("çŸ­ä¿¡æ¥æº:");
+					// è·å¾—æ¥æ”¶çŸ­ä¿¡çš„ç”µè¯å·ç 
 					sb.append(currentMessage.getDisplayOriginatingAddress());
-					sb.append("\n------¶ÌĞÅÄÚÈİ------\n");
-					// »ñµÃ¶ÌĞÅµÄÄÚÈİ
+					sb.append("\n------çŸ­ä¿¡å†…å®¹------\n");
+					// è·å¾—çŸ­ä¿¡çš„å†…å®¹
 					sb.append(currentMessage.getDisplayMessageBody());
 				}
 			}
