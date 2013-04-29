@@ -22,4 +22,5 @@ public class SmsClass {
 	Date date;//短信的日期表示
 	int cur,total;//这条短信是其中的cur段 总共有total段
     boolean read;//这条短信是否已读 true表示已读 false表示未读
+
 }
