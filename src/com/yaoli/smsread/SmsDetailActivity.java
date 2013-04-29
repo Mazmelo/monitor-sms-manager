@@ -1,9 +1,6 @@
 package com.yaoli.smsread;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -39,9 +36,10 @@ import com.tencent.mm.sdk.openapi.WXTextObject;
 public class SmsDetailActivity extends Activity 
 implements OnScrollListener, OnClickListener, OnGestureListener{
 	private static final String TAG = "SmsDetailActivity";
-	private SimpleAdapter mSimpleAdapter;
+	//private SimpleAdapter mSimpleAdapter;
+    private DetailListViewAdapter mSimpleAdapter;
 	private ListView lv;
-	private ArrayList<HashMap<String,String>> list;
+	private List<Map<String,Object>> list;
 	HashSet<String> setId;//每位联系人所有短信的id集合
 	private long lastTime;
 	private boolean loadComplete;
@@ -52,7 +50,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 	SmsManager sms;
 	Button btnReply;
 	private boolean sendAble;//当前按键处于发送状态还是回复状态
-	
+
 	private static final String WX_APP_ID = "wxac5ff3d0320855de";
 	private IWXAPI wxapi;
 	@Override
@@ -94,12 +92,13 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 		setId.clear();
 		smsDetail = new SmsDetail(SmsDetailActivity.this);
 		//smsDetail.init();
-		list = new ArrayList<HashMap<String,String>>();
+		list = new ArrayList<Map<String,Object>>();
 		getMoreData(strAddress, 30);
 		
-		mSimpleAdapter = new SimpleAdapter(this, list, R.layout.sms_item,  
+		/*mSimpleAdapter = new SimpleAdapter(this, list, R.layout.sms_item,
 	                new String[] { "ItemDate", "ItemText" },  
-	                new int[] { R.id.item_date, R.id.item_content }); 
+	                new int[] { R.id.item_date, R.id.item_content }); */
+        mSimpleAdapter = new DetailListViewAdapter(this, list);
 		lv = (ListView)findViewById(R.id.lvSmsDetail);
 		lv.setAdapter(mSimpleAdapter);  
 		lv.setOnScrollListener(this); 
@@ -136,21 +135,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 	
 		
 	}
-	/*public boolean onTouch(View v, MotionEvent event)
-	{
-		if(sendAble)
-		{
-			InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(INPUT_METHOD_SERVICE); 
-	        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-	        if(et.getText().length()==0)
-	        {
-	    		et.setVisibility(View.GONE);
-	    		btn.setText("回复");
-	    		sendAble = false;
-	        }
-		}
-		return false;
-	}*/
+
 	public void onScroll(AbsListView view, int firstVisibleItem, 
 			 int visibleItemCount, int totalItemCount)
 	{
@@ -183,9 +168,11 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 				return ;
 			}
 			TimeUtil t = new TimeUtil(sms.time);
-			HashMap<String, String> map = new HashMap<String, String>();  
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("ItemDate", t.toDate());
 			map.put("ItemText", sms.body);
+            if(sms.read)
+                map.put("ItemRead", sms.read);
 			list.add(map);
 		}
 		/*String[] projection = new String[] { "_id", "address", "person", "body", "date", "type" };
