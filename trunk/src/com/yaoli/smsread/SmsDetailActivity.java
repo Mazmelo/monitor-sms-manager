@@ -127,11 +127,12 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 			 SendMessageToWX.Req req = new SendMessageToWX.Req();
 			 req.transaction = String.valueOf(System.currentTimeMillis());
 			 req.message = msg;
+             req.scene =SendMessageToWX.Req.WXSceneSession;
 			 
 			 wxapi.sendReq(req);
 			 Toast.makeText(SmsDetailActivity.this, date ,Toast.LENGTH_LONG).show();
 			}
-		});*/
+		}); */
 	
 		
 	}

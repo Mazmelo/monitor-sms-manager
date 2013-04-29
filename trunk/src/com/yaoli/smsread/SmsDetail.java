@@ -69,6 +69,24 @@ public class SmsDetail {
 		}
 		return sms.cur;
 	}
+    static public int getUnReadCount(Context context, String addr)
+    {
+        String[] projection = new String[] { "_id", "read", "type"};
+        String selection = "read=0 and type=1 and address='"+addr +"'";
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(Uri.parse("content://sms/"),
+                    projection,
+                    selection,
+                    null,
+                    null);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+           cursor.close();
+        }
+        return cursor.getCount();
+    }
 	//从数据库中加载更多的短信数据
 	//返回false表示有数据 返回true表示全部加载完了
 	public boolean loadMoreData(int getNum)

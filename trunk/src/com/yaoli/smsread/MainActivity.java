@@ -233,6 +233,16 @@ public class MainActivity extends Activity implements OnItemClickListener{
 					appItem.put("Date", strDate);
 					appItem.put("Content", strBody);
 					appItem.put("ThreadID", thread_id);
+                    int unRead =  SmsDetail.getUnReadCount(this, strAddress);
+                    if(unRead != 0)
+                    {
+                        if(unRead>99) unRead=99;
+                        appItem.put("UnRead", String.valueOf(unRead));
+                    }
+                    else
+                    {
+                        appItem.put("UnRead", "");
+                    }
 					appItems.add(appItem);
 					//myAdapter.notifyDataSetChanged();
 				} while (cur.moveToNext());
