@@ -301,6 +301,9 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	    	intent.putExtra(getText(R.string.sms_content).toString(), tv.getText());
 	    	intent.putExtra(getText(R.string.sms_address).toString(), appItems.get(position-1).get("Address").toString());
 	    	startActivity(intent);
+
+            appItems.get(position-1).put("UnRead", "");
+            myAdapter.notifyDataSetChanged();
 		}
 		else
 		{
