@@ -3,6 +3,7 @@ package com.yaoli.smsread;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,14 +61,25 @@ public class DetailListViewAdapter extends BaseAdapter{
 
     public void setupHolder(int position, View convertView, ViewHolder holder)
     {
-        holder.tv_date = (TextView)convertView.findViewById(R.id.item_date);
+        int type = Integer.valueOf((String)listItems.get(position).get("ItemType")).intValue();
+        String date, text;
+        date = (String)listItems.get(position).get("ItemDate");
+        text = (String)listItems.get(position).get("ItemText");
+
         holder.tv_content = (TextView)convertView.findViewById(R.id.item_content);
+        holder.tv_date = (TextView)convertView.findViewById(R.id.item_date);
         holder.ly_item = (LinearLayout)convertView.findViewById(R.id.sms_item);
+        if(type==1){//接收
+            holder.ly_item.setPadding(0,0,80,0);
+        } else /*if (type==2)*/{//发送
+            holder.ly_item.setPadding(80,0,0,0);
+            //holder.tv_content.setGravity(Gravity.RIGHT);
+        }
 
         holder.tv_date.setText((String)listItems.get(position).get("ItemDate"));
-        holder.tv_content.setText((String)listItems.get(position).get("ItemText"));
+        holder.tv_content.setText(date+"\n"+text);
 
-        Object read = listItems.get(position).get("ItemRead");
+        /*Object read = listItems.get(position).get("ItemRead");
         if(read == null)
         {
             holder.ly_item.setBackgroundColor(Color.GRAY);
@@ -75,17 +87,6 @@ public class DetailListViewAdapter extends BaseAdapter{
         else
         {
             holder.ly_item.setBackgroundColor(Color.WHITE);
-        }
-        /*LinearLayout layout = (LinearLayout)convertView.findViewById(R.id.sms_item);
-
-        if(read != null)
-        {
-            //未读短信
-            layout.setBackgroundColor(Color.GRAY);
-        }
-        else
-        {
-            layout.setBackgroundColor(Color.WHITE);
         }*/
     }
     @Override

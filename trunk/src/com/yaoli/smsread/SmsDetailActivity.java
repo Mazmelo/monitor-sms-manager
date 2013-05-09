@@ -171,6 +171,7 @@ implements OnScrollListener, OnClickListener, OnGestureListener{
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("ItemDate", t.toDate());
 			map.put("ItemText", sms.body);
+            map.put("ItemType", String.valueOf(sms.type));
             if(sms.read)
                 map.put("ItemRead", sms.read);
 			list.add(map);

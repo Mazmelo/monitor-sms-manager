@@ -141,6 +141,7 @@ public class SmsDetail {
 			String body = cur.getString(index_body);
 			long date = cur.getLong(index_date);
             int read = cur.getInt(index_read);//0:not read 1:read default is 0
+            int type = cur.getInt(index_type);//1为接收  2为发送
 			if(setSmsId.contains(id))
 			{
 				Log.d(TAG, "Contains id="+id);
@@ -148,7 +149,7 @@ public class SmsDetail {
 			}
 			if(lastLoadTime>date || lastLoadTime ==0) lastLoadTime = date;
 			
-			SmsClass sms = new SmsClass(body, date, read==1);
+			SmsClass sms = new SmsClass(body, date, type, read==1);
 			int index = getSmsIndex(sms);
 			smsList.get(index).add(sms);//加入对应下标的短信集合中
 			setSmsId.add(id);
@@ -190,7 +191,8 @@ public class SmsDetail {
 		ArrayList<SmsClass> smsSeg = new ArrayList<SmsClass>();
 		long earlyTime = 0;
         boolean isRead = true;//默认为已读
-		for(int i=0;i<maxSegNum;i++)
+        int type=1;
+        for(int i=0;i<maxSegNum;i++)
 		{
 			SmsClass seg =smsList.get(i).peek(); 
 			if(seg != null && seg.time > earlyTime)
@@ -217,6 +219,7 @@ public class SmsDetail {
 				Log.d(TAG, "i="+i+" time="+sms.time+" "+sms.cur+"/"+sms.total+" "+sms.body);
 				smsList.get(i).poll();
                 if(sms.read==false) isRead = false;//只要有一段短信是未读的 就认为整条是未读的
+                type = sms.type;
 				if(i == sms.total) break;//拼接已完成
 			}
 		}
@@ -226,7 +229,7 @@ public class SmsDetail {
 			return null;
 		}
 		//Log.d(TAG, "sBody="+sBody);
-		return new SmsClass(sBody.toString(), earlyTime, isRead);
+		return new SmsClass(sBody.toString(), earlyTime, type, isRead);
 	}
 	public void init()
 	{
