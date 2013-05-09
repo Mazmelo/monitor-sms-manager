@@ -8,8 +8,10 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
@@ -57,7 +59,13 @@ public class MainActivity extends Activity implements OnItemClickListener{
         Log.d(TAG, "setFeatureInt");
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_main);
 		Log.d(TAG, "setFeatureInt OK");
-		appItems = new ArrayList<Map<String, Object>>();
+
+        //获取上次退出的时间戳
+        SharedPreferences sharedata = getSharedPreferences("data", 0);
+        long exitTime = sharedata.getLong("exit_time", 0);
+        Toast.makeText(MainActivity.this, "exitTime="+exitTime, Toast.LENGTH_LONG).show();
+
+        appItems = new ArrayList<Map<String, Object>>();
 		myAdapter = new ListViewAdapter(this, appItems);
 		Log.d(TAG, "myAdapter="+myAdapter);
 		lv = (ListView)findViewById(R.id.lvMain);
@@ -260,7 +268,8 @@ public class MainActivity extends Activity implements OnItemClickListener{
     	{
     		appItems.get(i).put("Count", "("+getAddressCount(appItems.get(i).get("Address").toString())+")");
     	}
-    	Log.d(TAG, "get All Count OK");
+
+        Log.d(TAG, "get All Count OK");
 		Log.d(TAG, "myAdapter="+myAdapter);
     	//myAdapter.notifyDataSetChanged();
     	Log.d(TAG, "getSmsInPhone OK");
@@ -286,7 +295,12 @@ public class MainActivity extends Activity implements OnItemClickListener{
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+    private void markAllReaded(String num)
+    {
+        ContentValues values = new ContentValues();
+        values.put("read", "1");
+        getContentResolver().update(Uri.parse(SMS_URI_INBOX), values, "address='"+num+"'", null);
+    }
 	@Override
 	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 		// TODO Auto-generated method stub
@@ -299,11 +313,16 @@ public class MainActivity extends Activity implements OnItemClickListener{
 	    	intent.putExtra(getText(R.string.sms_contact).toString(), tv.getText());
 	    	tv = (TextView)v.findViewById(R.id.Content);
 	    	intent.putExtra(getText(R.string.sms_content).toString(), tv.getText());
-	    	intent.putExtra(getText(R.string.sms_address).toString(), appItems.get(position-1).get("Address").toString());
+            String num = appItems.get(position-1).get("Address").toString();
+	    	intent.putExtra(getText(R.string.sms_address).toString(), num);
 	    	startActivity(intent);
 
             appItems.get(position-1).put("UnRead", "");
             myAdapter.notifyDataSetChanged();
+
+            //Toast.makeText(this, "num="+num, Toast.LENGTH_LONG).show();
+            //将该号码的所有短信标记为已读
+            markAllReaded(num);
 		}
 		else
 		{
@@ -312,5 +331,12 @@ public class MainActivity extends Activity implements OnItemClickListener{
 			startActivity(intent);
 		}
 		//Toast.makeText(this, "position="+position+"id="+id, Toast.LENGTH_LONG).show();
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        //保存一下退出的时间戳 下次启动应用时就从该时刻开始加载新短信
+        SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
+        sharedata.putLong("exit_time", System.currentTimeMillis());
+        sharedata.commit();
     }
 }
